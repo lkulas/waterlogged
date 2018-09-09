@@ -1,5 +1,5 @@
 {
-  "name": "node-jwt-auth",
+  "name": "garden-tracker",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,8 +7,12 @@
     "start": "node server.js",
     "test": "mocha --exit"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lkulas/garden-tracker.git"
+  },
   "keywords": [],
-  "author": "",
+  "author": "Laura Kulas",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.0",
