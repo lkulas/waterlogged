@@ -1,2 +1,9 @@
 language: node_js
 node_js: node
+deploy:
+  provider: heroku
+  api_key:
+    secure: RI6+NfC/iMDOCmWq2LMSJuISiTSn87U6pb42/znnp9IQdqGcSEIvAPfmirGtjVJqQsJOtnEKXD7s5Y3L7wU4xP80i/m8kWYgdGSSWbJKL021LbJKyeidgK0QlWill9jcMrb8dgPVG1+YDWi15I0GNz4BdZ2mbGFCk2Q2QygV+Zf9ezrtlohTQYenlSLz9ruYkfeKs1dYOJcEr+mDJYmhJwGvl14SYPVkskiPt/tq+SFpeGpojmcnL6L+nZn83t7L4XD1v6mJIR9/nf6F5wlBFvcaVvMJ5UlHvcgcA1MbQaqmdN3azQa7bdISBYFqWcFYBoH9HZEeewZxr2neglPgCIex72NgEQqro3rUzS5olEq+1M/I2IV+OP16k/fdYvt8+hoMsDhBDbeeySHu84I0kD9Y7NK2l0u3NUBgdRN5GG36NmlMAQ0HyB5nDCy7AYxjv1gmSrJ2DaKRt2HkBHEvlG1agJ3gJE3a3D0gzQkvXlhFrkniOBaTVGXtQTZ+5kucvu00scVevOGlBQBJk39CHMyxgspbzxkbBGSpO/8QNQxlGQCR24+aSGZLmHnV5Vae2G6Ci7kV/sQ5DIHczWAe5HwUBqaY/mHThsFp1XrMqIYflUZfBYqqkELTpJupzJmHgQfRZ4C56rXMer73G5Rs2gKj6bHgQEqDWqsDwdTxjiQ=
+  app: sheltered-plateau-93284
+  on:
+    repo: lkulas/garden-tracker
