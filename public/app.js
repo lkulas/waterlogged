@@ -78,22 +78,31 @@ function displayPlantDetails(data) {
     $('#my-garden').prop('hidden', true);
     $('#plant-details').prop('hidden', false);
     const plant = data.gardens[0].plants[0];
-    $('#plant-details').append(
+    $('#plant-details').html(
         `<h2>${plant.name}</h2>
         <ul>
             <li>Planted: ${plant.planted}</li>
             <li>Water every: ${plant.waterEvery}</li>
             <li>Fertilize every: ${plant.fertilizeEvery}</li>
-        </ul>`);
+        </ul>
+        <button type="button" class="back-button">Back</button>`);
 };
 
 function watchPlantDetailsClick() {
     $('#my-garden').on('click', 'h3', event => {
         getPlantDetails(displayPlantDetails);
-    })
-}
+    });
+};
+
+function watchGoBack() {
+    $('#plant-details').on('click', '.back-button', event => {
+        $('#plant-details').prop('hidden', true);
+        $('#my-garden').prop('hidden', false);
+    });
+};
 
 $(function() {
     getAndDisplayGarden();
     watchPlantDetailsClick();
+    watchGoBack();
 })
