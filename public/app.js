@@ -8,21 +8,21 @@ const MOCK_GARDEN_DATA = {
                 {
                     "name": "Tomatoes",
                     "planted": new Date().toString(),
-                    "waterEvery": "3 days",
+                    "waterEvery": 3,
                     "harvestDate": new Date().toString(),
                     "lastWatered": new Date().toString()
                 },
                 {
                     "name": "Basil",
                     "planted": new Date().toString(),
-                    "waterEvery": "2 days",
+                    "waterEvery": 2,
                     "harvestDate": new Date().toString(),
                     "lastWatered": new Date().toString()
                 },
                 {
                     "name": "Carrots",
                     "planted": new Date().toString(),
-                    "waterEvery": "3 days",
+                    "waterEvery": 3,
                     "harvestDate": new Date().toDateString(),
                     "lastWatered": new Date().toString()
                 }
@@ -35,21 +35,21 @@ const MOCK_GARDEN_DATA = {
                 {
                     "name": "Strawberries",
                     "planted": new Date().toString(),
-                    "waterEvery": "3 days",
+                    "waterEvery": 3,
                     "harvestDate": new Date().toString(),
                     "lastWatered": new Date().toString()
                 },
                 {
                     "name": "Lettuce",
                     "planted": new Date().toString(),
-                    "waterEvery": "2 days",
+                    "waterEvery": 2,
                     "harvestDate": new Date().toString(),
                     "lastWatered": new Date().toString()
                 },
                 {
                     "name": "Cucumbers",
                     "planted": new Date().toString(),
-                    "waterEvery": "3 days",
+                    "waterEvery": 3,
                     "harvestDate": new Date().toString(),
                     "lastWatered": new Date().toString()
                 }
@@ -89,7 +89,7 @@ function displayPlantDetails(data) {
         <ul>
             <li>Planted: ${plant.planted}</li>
             <li>Last watered: ${plant.lastWatered}</li>
-            <li>Water every: ${plant.waterEvery}</li>
+            <li>Water every: ${plant.waterEvery} days</li>
             <li>Last harvested: ${plant.harvestDate}</li>
         </ul>
         <button type="button" class="edit-button">Edit</button>
