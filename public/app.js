@@ -1,72 +1,99 @@
+
 const MOCK_GARDEN_DATA = {
     "gardens": [
         {
             "id": "1111111",
+            "username": "User1",
             "plants": [
                 {
-                    "name": "tomatoes",
-                    "planted": Date.now(),
+                    "name": "Tomatoes",
+                    "planted": new Date().toString(),
                     "waterEvery": "3 days",
                     "fertilizeEvery": "14 days"
                 },
                 {
-                    "name": "basil",
-                    "planted": Date.now(),
+                    "name": "Basil",
+                    "planted": new Date().toString(),
                     "waterEvery": "2 days",
                     "fertilizeEvery": "28 days"
                 },
                 {
-                    "name": "carrots",
-                    "planted": Date.now(),
+                    "name": "Carrots",
+                    "planted": new Date().toString(),
                     "waterEvery": "3 days",
                     "fertilizeEvery": "28 days"
                 }
             ],
-            "username": "User1",
         },
         {
             "id": "222222",
+            "username": "User2",
             "plants": [
                 {
-                    "name": "strawberries",
-                    "planted": Date.now(),
+                    "name": "Strawberries",
+                    "planted": new Date().toString(),
                     "waterEvery": "3 days",
                     "fertilizeEvery": "14 days"
                 },
                 {
-                    "name": "lettuce",
-                    "planted": Date.now(),
+                    "name": "Lettuce",
+                    "planted": new Date().toString(),
                     "waterEvery": "2 days",
                     "fertilizeEvery": "28 days"
                 },
                 {
-                    "name": "cucumbers",
-                    "planted": Date.now(),
+                    "name": "Cucumbers",
+                    "planted": new Date().toString(),
                     "waterEvery": "3 days",
                     "fertilizeEvery": "28 days"
                 }
             ],
-            "username": "User2",
         }
     ]
 };
 
 function getGarden(callbackFn) {
     setTimeout(function(){ callbackFn(MOCK_GARDEN_DATA)}, 100);
-}
+};
 
 function displayGarden(data) {
     for (let i = 0; i < data.gardens[0].plants.length; i++) {
         $('#my-garden').append(
-        `<h3>${data.gardens[0].plants[i].name}</h2>`);
-    }
-
-}
+        `<div>
+            <h3>${data.gardens[0].plants[i].name}</h3>
+            <button type="button" class="delete-button">Delete</button>
+        </div>`);
+    };
+};
 
 function getAndDisplayGarden() {
     getGarden(displayGarden);
+};
+
+function getPlantDetails(callbackFn) {
+    setTimeout(function(){ callbackFn(MOCK_GARDEN_DATA)}, 100);
+};
+
+function displayPlantDetails(data) {
+    $('#my-garden').prop('hidden', true);
+    $('#plant-details').prop('hidden', false);
+    const plant = data.gardens[0].plants[0];
+    $('#plant-details').append(
+        `<h2>${plant.name}</h2>
+        <ul>
+            <li>Planted: ${plant.planted}</li>
+            <li>Water every: ${plant.waterEvery}</li>
+            <li>Fertilize every: ${plant.fertilizeEvery}</li>
+        </ul>`);
+};
+
+function watchPlantDetailsClick() {
+    $('#my-garden').on('click', 'h3', event => {
+        getPlantDetails(displayPlantDetails);
+    })
 }
 
 $(function() {
     getAndDisplayGarden();
+    watchPlantDetailsClick();
 })
