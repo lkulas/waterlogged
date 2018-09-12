@@ -109,8 +109,17 @@ function watchGoBack() {
     });
 };
 
+function watchLoginSubmit() {
+    $('#login').on('submit', '#login-form', event => {
+        event.preventDefault();
+        $('#login').prop('hidden', true);
+        $('#my-garden').prop('hidden', false);
+    })
+}
+
 $(function() {
     getAndDisplayGarden();
     watchPlantDetailsClick();
     watchGoBack();
+    watchLoginSubmit();
 })
