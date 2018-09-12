@@ -1,9 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title></title>
+	<title>Garden Tracker</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="app.js"></script>
 </head>
 <body>
-<h1>Hello, World</h1>
+	<h1>Garden Tracker</h1>
+	<div id="login">
+		<h2>Login</h2>
+		<form id="login-form">
+			<label>Username
+				<input type="text" required>
+			</label>
+			<label>Password
+				<input type="password" required>
+			</label>
+				<button type="submit">Submit</button>
+		</form>
+	</div>
+	<div id="my-garden" hidden>
+	</div>
+	<div id="plant-details" hidden>
+	</div>
 </body>
 </html>
