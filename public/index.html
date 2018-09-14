@@ -7,6 +7,9 @@
 </head>
 <body>
 	<h1>Garden Tracker</h1>
+	<div id="logout" hidden>
+		<button type="button">Logout</button>
+	</div>
 	<div id="login">
 		<h2>Login</h2>
 		<form id="login-form">
@@ -17,6 +20,21 @@
 				<input type="password" required>
 			</label>
 				<button type="submit">Submit</button>
+		</form>
+		<p>New user? <a href="">Register now</a></p>
+	</div>
+	<div id="register" hidden>
+		<form id="register-form">
+			<label>Username
+				<input type="text" required>
+			</label>
+			<label>Password
+				<input type="password" required>
+			</label>
+			<label>Confirm password
+				<input type="password" required>
+			</label>
+			<button type="submit">Submit</button>
 		</form>
 	</div>
 	<div id="my-garden" hidden>

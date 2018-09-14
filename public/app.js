@@ -9,6 +9,8 @@ const MOCK_GARDEN_DATA = {
                     "name": "Tomatoes",
                     "planted": new Date().toString(),
                     "waterEvery": 3,
+                    "nextWater": new Date().toString(),
+                    "nextHarvest": new Date().toString(),
                     "harvestDate": new Date().toString(),
                     "lastWatered": new Date().toString()
                 },
@@ -16,6 +18,8 @@ const MOCK_GARDEN_DATA = {
                     "name": "Basil",
                     "planted": new Date().toString(),
                     "waterEvery": 2,
+                    "nextWater": new Date().toString(),
+                    "nextHarvest": new Date().toString(),
                     "harvestDate": new Date().toString(),
                     "lastWatered": new Date().toString()
                 },
@@ -23,6 +27,8 @@ const MOCK_GARDEN_DATA = {
                     "name": "Carrots",
                     "planted": new Date().toString(),
                     "waterEvery": 3,
+                    "nextWater": new Date().toString(),
+                    "nextHarvest": new Date().toString(),
                     "harvestDate": new Date().toDateString(),
                     "lastWatered": new Date().toString()
                 }
@@ -36,6 +42,8 @@ const MOCK_GARDEN_DATA = {
                     "name": "Strawberries",
                     "planted": new Date().toString(),
                     "waterEvery": 3,
+                    "nextWater": new Date().toString(),
+                    "nextHarvest": new Date().toString(),
                     "harvestDate": new Date().toString(),
                     "lastWatered": new Date().toString()
                 },
@@ -43,6 +51,8 @@ const MOCK_GARDEN_DATA = {
                     "name": "Lettuce",
                     "planted": new Date().toString(),
                     "waterEvery": 2,
+                    "nextWater": new Date().toString(),
+                    "nextHarvest": new Date().toString(),
                     "harvestDate": new Date().toString(),
                     "lastWatered": new Date().toString()
                 },
@@ -50,6 +60,8 @@ const MOCK_GARDEN_DATA = {
                     "name": "Cucumbers",
                     "planted": new Date().toString(),
                     "waterEvery": 3,
+                    "nextWater": new Date().toString(),
+                    "nextHarvest": new Date().toString(),
                     "harvestDate": new Date().toString(),
                     "lastWatered": new Date().toString()
                 }
@@ -88,11 +100,12 @@ function displayPlantDetails(data) {
         `<h2>${plant.name}</h2>
         <ul>
             <li>Planted: ${plant.planted}</li>
-            <li>Last watered: ${plant.lastWatered}</li>
+            <li>Water on: ${plant.nextWater}</li>
             <li>Water every: ${plant.waterEvery} days</li>
-            <li>Last harvested: ${plant.harvestDate}</li>
+            <li>Next harvest: ${plant.nextHarvest}</li>
         </ul>
         <button type="button" class="edit-button">Edit</button>
+        <button type="button" class="delete-button">Delete</button>
         <button type="button" class="back-button">Back</button>`);
 };
 
@@ -114,12 +127,32 @@ function watchLoginSubmit() {
         event.preventDefault();
         $('#login').prop('hidden', true);
         $('#my-garden').prop('hidden', false);
-    })
-}
+        $('#logout').prop('hidden', false);
+    });
+};
+
+function watchClickRegister() {
+    $('#login').on('click', 'a', event => {
+        event.preventDefault();
+        $('#login').prop('hidden', true);
+        $('#register').prop('hidden', false);
+    });
+};
+
+function watchLogout() {
+    $('#logout').on('click', 'button', event => {
+        $('#logout').prop('hidden', true);
+        $('#login').prop('hidden', false);
+        $('#my-garden').prop('hidden', true);
+        $('#plant-details').prop('hidden', true);
+    });
+};
 
 $(function() {
     getAndDisplayGarden();
     watchPlantDetailsClick();
     watchGoBack();
     watchLoginSubmit();
+    watchClickRegister();
+    watchLogout();
 })
