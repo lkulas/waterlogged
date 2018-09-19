@@ -14,30 +14,35 @@
 		<h2>Login</h2>
 		<form id="login-form">
 			<label>Username
-				<input type="text" required>
+				<input type="text" class="username" required>
 			</label>
 			<label>Password
-				<input type="password" required>
+				<input type="password" class="password" required>
 			</label>
 				<button type="submit">Submit</button>
 		</form>
-		<p>New user? <a href="">Register now</a></p>
+		<p>New user?</p> 
+		<button type="button" id="register-button">Register now</button>
 	</div>
 	<div id="register" hidden>
 		<form id="register-form">
 			<label>Username
-				<input type="text" required>
+				<input type="text" class="username" required>
 			</label>
 			<label>Password
-				<input type="password" required>
+				<input type="password" class="password" required>
 			</label>
 			<label>Confirm password
-				<input type="password" required>
+				<input type="password" class="match-password" required>
 			</label>
 			<button type="submit">Submit</button>
 		</form>
 	</div>
+	<div id="tasks" hidden>
+		<h2>Tasks</h2>
+	</div>
 	<div id="my-garden" hidden>
+		<h2>My Garden</h2>
 	</div>
 	<div id="plant-details" hidden>
 	</div>

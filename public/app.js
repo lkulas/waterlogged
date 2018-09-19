@@ -1,18 +1,22 @@
 
+
+
 const MOCK_GARDEN_DATA = {
-    "gardens": [
+    gardens: [
         {
-            "id": "1111111",
-            "username": "User1",
-            "plants": [
+            id: "1111111",
+            username: "User1",
+            plants: [
                 {
-                    "name": "Tomatoes",
-                    "planted": new Date().toString(),
-                    "waterEvery": 3,
-                    "nextWater": new Date().toString(),
-                    "nextHarvest": new Date().toString(),
-                    "harvestDate": new Date().toString(),
-                    "lastWatered": new Date().toString()
+                    name: "Tomatoes",
+                    planted: new Date('2018-09-18'),
+                    waterEvery: 3,
+                    nextWater: function() {
+                        return addDays(this.lastWatered, this.waterEvery)
+                    },
+                    nextHarvest: new Date(),
+                    harvestDate: new Date(),
+                    lastWatered: new Date()
                 },
                 {
                     "name": "Basil",
@@ -70,6 +74,13 @@ const MOCK_GARDEN_DATA = {
     ]
 };
 
+function addDays(date, days) {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  console.log(result);
+  return result;
+};
+
 function getGarden(callbackFn) {
     setTimeout(function(){ callbackFn(MOCK_GARDEN_DATA)}, 100);
 };
@@ -99,10 +110,10 @@ function displayPlantDetails(data) {
     $('#plant-details').html(
         `<h2>${plant.name}</h2>
         <ul>
-            <li>Planted: ${plant.planted}</li>
-            <li>Water on: ${plant.nextWater}</li>
+            <li>Planted: ${plant.planted.toString()}</li>
+            <li>Water on: ${plant.nextWater()}</li>
             <li>Water every: ${plant.waterEvery} days</li>
-            <li>Next harvest: ${plant.nextHarvest}</li>
+            <li>Next harvest: ${plant.nextHarvest.toString()}</li>
         </ul>
         <button type="button" class="edit-button">Edit</button>
         <button type="button" class="delete-button">Delete</button>
@@ -119,20 +130,24 @@ function watchGoBack() {
     $('#plant-details').on('click', '.back-button', event => {
         $('#plant-details').prop('hidden', true);
         $('#my-garden').prop('hidden', false);
+        $('#tasks').prop('hidden', false);
     });
 };
 
 function watchLoginSubmit() {
     $('#login').on('submit', '#login-form', event => {
         event.preventDefault();
+        $('.username').val('');
+        $('.password').val('');
         $('#login').prop('hidden', true);
+        $('#tasks').prop('hidden', false);
         $('#my-garden').prop('hidden', false);
         $('#logout').prop('hidden', false);
     });
 };
 
 function watchClickRegister() {
-    $('#login').on('click', 'a', event => {
+    $('#login').on('click', '#register-button', event => {
         event.preventDefault();
         $('#login').prop('hidden', true);
         $('#register').prop('hidden', false);
@@ -145,6 +160,7 @@ function watchLogout() {
         $('#login').prop('hidden', false);
         $('#my-garden').prop('hidden', true);
         $('#plant-details').prop('hidden', true);
+        $('#tasks').prop('hidden', true);
     });
 };
 
@@ -155,4 +171,4 @@ $(function() {
     watchLoginSubmit();
     watchClickRegister();
     watchLogout();
-})
+});
