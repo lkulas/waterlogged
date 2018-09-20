@@ -257,6 +257,16 @@ function watchLoginSubmit() {
     });
 };
 
+function watchRegisterSubmit() {
+    $('#register').on('submit', '#register-form', event => {
+        event.preventDefault();
+        $('.username').val('');
+        $('.password').val('');
+        $('.match-password').val('');
+        window.location.href = 'index.html';
+    })
+}
+
 function watchLogout() {
     $('#logout').on('click', 'button', event => {
         window.location.href = '../public/index.html';
@@ -277,7 +287,6 @@ function watchDeletePlant() {
 };
 
 function watchClickEdit() {
-
     $('#plant-details').on('click', '.edit-button', event => {
         const formTarget = event.target.closest('li').className;
         $('#plant-details').find(`.${formTarget}`).find('form').prop('hidden', false);
@@ -295,8 +304,8 @@ function watchEditSubmit() {
         const array = MOCK_GARDEN_DATA.gardens[0].plants;
         const target = event.target.closest('div').className;
         const indexOf = array.findIndex(i => i.name === target);
-    })
-}
+    });
+};
 
 $(function() {
     getAndDisplayGarden();
@@ -308,4 +317,5 @@ $(function() {
     watchDeletePlant();
     watchClickEdit();
     watchEditSubmit();
+    watchRegisterSubmit();
 });
