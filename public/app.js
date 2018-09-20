@@ -152,6 +152,45 @@ function displayPlantDetails(data, target) {
         </div>`);
 };
 
+function getTasks(callbackFn) {
+    setTimeout(function(){ callbackFn(MOCK_GARDEN_DATA)}, 100);
+};
+
+function displayTasks(data) {
+    $('#tasks-list').html('');
+    const tasks = [];
+    if (data.gardens[0].plants.length === 0) {
+        $('#tasks-list').html(
+            `<p>No upcoming tasks</p>`
+            )
+    } else {
+        for (let i = 0; i < data.gardens[0].plants.length; i++) {
+            tasks.push(
+            {
+                date: data.gardens[0].plants[i].nextWater(),
+                name: data.gardens[0].plants[i].name,
+                task: 'Water'
+            },
+            {
+                date: data.gardens[0].plants[i].nextHarvest(),
+                name: data.gardens[0].plants[i].name,
+                task: 'Harvest'
+            });
+        };
+        tasks.sort(function(a, b) {
+            return  +new Date(a.date) - +new Date(b.date);
+        });
+        console.log(tasks);
+        for (let i = 0; i < tasks.length; i++) {
+            $('#tasks-list').append(`<li>${tasks[i].date.toString()}: ${tasks[i].task} ${tasks[i].name}</li>`)
+        };
+    };
+};
+
+function getAndDisplayTasks() {
+    getTasks(displayTasks);
+};
+
 function watchPlantDetailsClick() {
     $('#my-garden').on('click', 'h3', event => {
         $('#my-garden').prop('hidden', true);
@@ -198,12 +237,14 @@ function watchDeletePlant() {
         array.splice(indexOf, 1);
         $('#plant-details').prop('hidden', true);
         getAndDisplayGarden();
+        getAndDisplayTasks();
         $('#my-garden').prop('hidden', false);
     })
 }
 
 $(function() {
     getAndDisplayGarden();
+    getAndDisplayTasks();
     watchPlantDetailsClick();
     watchGoBack();
     watchLoginSubmit();
