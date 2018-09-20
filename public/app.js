@@ -260,12 +260,32 @@ function watchLoginSubmit() {
 function watchRegisterSubmit() {
     $('#register').on('submit', '#register-form', event => {
         event.preventDefault();
-        $('.username').val('');
-        $('.password').val('');
-        $('.match-password').val('');
-        window.location.href = 'index.html';
-    })
-}
+        const username = $('.username').val();
+        const password = $('.password').val();
+        const matchPassword = $('.match-password').val();
+        registerUser(username, password, matchPassword, registerUserSuccess());  
+    });
+};
+
+function registerUser(_username, _password, _matchPassword, callback) {
+  const settings = {
+    url: '/api/users/',
+    data: {
+      username: _username,
+      password: _password,
+      matchPassword: _matchPassword
+    },
+    dataType: 'json',
+    method: 'POST',
+    success: callback
+  };
+  $.ajax(settings);
+};
+
+function registerUserSuccess() {
+    window.location.href = 'index.html';
+    alert('Registration successful!');
+};
 
 function watchLogout() {
     $('#logout').on('click', 'button', event => {
