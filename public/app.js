@@ -220,11 +220,7 @@ function watchLoginSubmit() {
 
 function watchLogout() {
     $('#logout').on('click', 'button', event => {
-        $('#logout').prop('hidden', true);
-        $('#login').prop('hidden', false);
-        $('#my-garden').prop('hidden', true);
-        $('#plant-details').prop('hidden', true);
-        $('#tasks').prop('hidden', true);
+        window.location.href = '../public/index.html';
     });
 };
 
