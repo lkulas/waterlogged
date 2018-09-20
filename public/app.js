@@ -139,11 +139,54 @@ function displayPlantDetails(data, target) {
             `<div class="${plant.name}">
                 <h2 class="plant-name">${plant.name}</h2>
                 <ul>
-                    <li class="planted">Planted: <span class="editable">${plant.planted.toLocaleString('en-US', options)}</span> <button type="button" class="edit-button">Edit</button><form class="edit" hidden><input type="text"><button type="submit">Submit</button></form></li>
-                    <li class="water">Water every: <span class="editable">${plant.waterEvery}</span><form class="edit" hidden><input type="text"><button type="submit">Submit</button></form> days <button type="button" class="edit-button">Edit</button></li>
-                    <li class="waterOn">Water on: <span class="editable">${plant.nextWater().toLocaleString('en-US', options)}</span> <button type="button" class="edit-button">Edit</button><form class="edit" hidden><input type="text"><button type="submit">Submit</button></form></li>
-                    <li class="harvest">Harvest every: <span class="editable">${plant.harvestEvery}</span> days <button type="button" class="edit-button">Edit</button><form class="edit" hidden><input type="text"><button type="submit">Submit</button></form></li>
-                    <li class="harvestOn">Harvest on: <span class="editable">${plant.nextHarvest().toLocaleString('en-US', options)}</span> <button type="button" class="edit-button">Edit</button><form class="edit" hidden><input type="text"><button type="submit">Submit</button></form></li>
+                    <li class="planted">Planted: 
+                        <span class="editable">${plant.planted.toLocaleString('en-US', options)}</span> 
+                        <button type="button" class="edit-button">Edit</button>
+                        <form class="edit" hidden>
+                            <label>Date
+                                <input type="date">
+                            </label>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </li>
+                    <li class="water">Water every: 
+                        <span class="editable">${plant.waterEvery}</span>
+                        <form class="edit" hidden>
+                            <input type="number">
+                            <button type="submit">Submit</button>
+                        </form>
+                        days 
+                        <button type="button" class="edit-button">Edit</button>
+                        </li>
+                    <li class="waterOn">Water on: 
+                        <span class="editable">${plant.nextWater().toLocaleString('en-US', options)}</span> 
+                        <button type="button" class="edit-button">Edit</button>
+                        <form class="edit" hidden>
+                            <label>Date
+                                <input type="date">
+                            </label>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </li>
+                    <li class="harvest">Harvest every: 
+                        <span class="editable">${plant.harvestEvery}</span>
+                        <form class="edit" hidden>
+                            <input type="number">
+                            <button type="submit">Submit</button>
+                        </form> 
+                        days 
+                        <button type="button" class="edit-button">Edit</button>
+                        </li>
+                    <li class="harvestOn">Harvest on: 
+                        <span class="editable">${plant.nextHarvest().toLocaleString('en-US', options)}</span> 
+                        <button type="button" class="edit-button">Edit</button>
+                        <form class="edit" hidden>
+                            <label>Date
+                                <input type="date">
+                            </label>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </li>
                 </ul>
                 <button type="button" class="delete-button">Delete</button>
                 <button type="button" class="back-button">Back</button>
@@ -266,3 +309,7 @@ $(function() {
     watchClickEdit();
     watchEditSubmit();
 });
+
+$( function() {
+    $( "#datepicker" ).datepicker();
+  } );
