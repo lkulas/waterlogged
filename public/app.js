@@ -14,28 +14,41 @@ const MOCK_GARDEN_DATA = {
                     nextWater: function() {
                         return addDays(this.lastWatered, this.waterEvery)
                     },
-                    nextHarvest: new Date(),
-                    harvestDate: new Date(),
-                    lastWatered: new Date()
+                    harvestEvery: 80,
+                    nextHarvest: function() {
+                        return addDays(this.lastHarvested, this.harvestEvery)
+                    },
+                    lastHarvested: new Date('2018-09-18'),
+                    lastWatered: new Date('2018-09-18')
                 },
                 {
-                    "name": "Basil",
-                    "planted": new Date().toString(),
-                    "waterEvery": 2,
-                    "nextWater": new Date().toString(),
-                    "nextHarvest": new Date().toString(),
-                    "harvestDate": new Date().toString(),
-                    "lastWatered": new Date().toString()
+                    name: "Basil",
+                    planted: new Date('2018-09-19'),
+                    waterEvery: 3,
+                    nextWater: function() {
+                        return addDays(this.lastWatered, this.waterEvery)
+                    },
+                    harvestEvery: 80,
+                    nextHarvest: function() {
+                        return addDays(this.lastHarvested, this.harvestEvery)
+                    },
+                    lastHarvested: new Date('2018-09-18'),
+                    lastWatered: new Date('2018-09-18')
                 },
                 {
-                    "name": "Carrots",
-                    "planted": new Date().toString(),
-                    "waterEvery": 3,
-                    "nextWater": new Date().toString(),
-                    "nextHarvest": new Date().toString(),
-                    "harvestDate": new Date().toDateString(),
-                    "lastWatered": new Date().toString()
-                }
+                    name: "Carrots",
+                    planted: new Date('2018-09-20'),
+                    waterEvery: 3,
+                    nextWater: function() {
+                        return addDays(this.lastWatered, this.waterEvery)
+                    },
+                    harvestEvery: 80,
+                    nextHarvest: function() {
+                        return addDays(this.lastHarvested, this.harvestEvery)
+                    },
+                    lastHarvested: new Date('2018-09-18'),
+                    lastWatered: new Date('2018-09-18')
+                },
             ],
         },
         {
@@ -43,32 +56,47 @@ const MOCK_GARDEN_DATA = {
             "username": "User2",
             "plants": [
                 {
-                    "name": "Strawberries",
-                    "planted": new Date().toString(),
-                    "waterEvery": 3,
-                    "nextWater": new Date().toString(),
-                    "nextHarvest": new Date().toString(),
-                    "harvestDate": new Date().toString(),
-                    "lastWatered": new Date().toString()
+                    name: "Tomatoes",
+                    planted: new Date('2018-09-18'),
+                    waterEvery: 3,
+                    nextWater: function() {
+                        return addDays(this.lastWatered, this.waterEvery)
+                    },
+                    harvestEvery: 80,
+                    nextHarvest: function() {
+                        return addDays(this.lastHarvested, this.harvestEvery)
+                    },
+                    lastHarvested: new Date('2018-09-18'),
+                    lastWatered: new Date('2018-09-18')
                 },
                 {
-                    "name": "Lettuce",
-                    "planted": new Date().toString(),
-                    "waterEvery": 2,
-                    "nextWater": new Date().toString(),
-                    "nextHarvest": new Date().toString(),
-                    "harvestDate": new Date().toString(),
-                    "lastWatered": new Date().toString()
+                    name: "Basil",
+                    planted: new Date('2018-09-19'),
+                    waterEvery: 3,
+                    nextWater: function() {
+                        return addDays(this.lastWatered, this.waterEvery)
+                    },
+                    harvestEvery: 80,
+                    nextHarvest: function() {
+                        return addDays(this.lastHarvested, this.harvestEvery)
+                    },
+                    lastHarvested: new Date('2018-09-18'),
+                    lastWatered: new Date('2018-09-18')
                 },
                 {
-                    "name": "Cucumbers",
-                    "planted": new Date().toString(),
-                    "waterEvery": 3,
-                    "nextWater": new Date().toString(),
-                    "nextHarvest": new Date().toString(),
-                    "harvestDate": new Date().toString(),
-                    "lastWatered": new Date().toString()
-                }
+                    name: "Carrots",
+                    planted: new Date('2018-09-20'),
+                    waterEvery: 3,
+                    nextWater: function() {
+                        return addDays(this.lastWatered, this.waterEvery)
+                    },
+                    harvestEvery: 80,
+                    nextHarvest: function() {
+                        return addDays(this.lastHarvested, this.harvestEvery)
+                    },
+                    lastHarvested: new Date('2018-09-18'),
+                    lastWatered: new Date('2018-09-18')
+                },
             ],
         }
     ]
@@ -77,7 +105,6 @@ const MOCK_GARDEN_DATA = {
 function addDays(date, days) {
   const result = new Date(date);
   result.setDate(result.getDate() + days);
-  console.log(result);
   return result;
 };
 
@@ -99,21 +126,18 @@ function getAndDisplayGarden() {
     getGarden(displayGarden);
 };
 
-function getPlantDetails(callbackFn) {
-    setTimeout(function(){ callbackFn(MOCK_GARDEN_DATA)}, 100);
-};
-
-function displayPlantDetails(data) {
-    $('#my-garden').prop('hidden', true);
-    $('#plant-details').prop('hidden', false);
-    const plant = data.gardens[0].plants[0];
+function displayPlantDetails(data, target) {
+    const indexOf = data.gardens[0].plants.findIndex(i => i.name === `${target}`);
+    console.log(indexOf);
+    const plant = data.gardens[0].plants[indexOf];
     $('#plant-details').html(
         `<h2>${plant.name}</h2>
         <ul>
             <li>Planted: ${plant.planted.toString()}</li>
-            <li>Water on: ${plant.nextWater()}</li>
             <li>Water every: ${plant.waterEvery} days</li>
-            <li>Next harvest: ${plant.nextHarvest.toString()}</li>
+            <li>Water on: ${plant.nextWater()}</li>
+            <li>Harvest every: ${plant.harvestEvery} days</li>
+            <li>Harvest on: ${plant.nextHarvest()}</li>
         </ul>
         <button type="button" class="edit-button">Edit</button>
         <button type="button" class="delete-button">Delete</button>
@@ -122,7 +146,11 @@ function displayPlantDetails(data) {
 
 function watchPlantDetailsClick() {
     $('#my-garden').on('click', 'h3', event => {
-        getPlantDetails(displayPlantDetails);
+        $('#my-garden').prop('hidden', true);
+        $('#plant-details').prop('hidden', false);
+        const plant = event.target.textContent;
+        console.log(plant);
+        displayPlantDetails(MOCK_GARDEN_DATA, plant);
     });
 };
 
@@ -130,7 +158,6 @@ function watchGoBack() {
     $('#plant-details').on('click', '.back-button', event => {
         $('#plant-details').prop('hidden', true);
         $('#my-garden').prop('hidden', false);
-        $('#tasks').prop('hidden', false);
     });
 };
 
@@ -139,18 +166,8 @@ function watchLoginSubmit() {
         event.preventDefault();
         $('.username').val('');
         $('.password').val('');
-        $('#login').prop('hidden', true);
-        $('#tasks').prop('hidden', false);
-        $('#my-garden').prop('hidden', false);
-        $('#logout').prop('hidden', false);
-    });
-};
-
-function watchClickRegister() {
-    $('#login').on('click', '#register-button', event => {
-        event.preventDefault();
-        $('#login').prop('hidden', true);
-        $('#register').prop('hidden', false);
+        window.location.href = '../garden/my-garden.html';
+        getAndDisplayGarden();
     });
 };
 
@@ -169,6 +186,5 @@ $(function() {
     watchPlantDetailsClick();
     watchGoBack();
     watchLoginSubmit();
-    watchClickRegister();
     watchLogout();
 });
