@@ -309,7 +309,3 @@ $(function() {
     watchClickEdit();
     watchEditSubmit();
 });
-
-$( function() {
-    $( "#datepicker" ).datepicker();
-  } );
