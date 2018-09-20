@@ -134,20 +134,20 @@ function getAndDisplayGarden() {
 
 function displayPlantDetails(data, target) {
     const indexOf = data.gardens[0].plants.findIndex(i => i.name === target);
-    console.log(indexOf);
     const plant = data.gardens[0].plants[indexOf];
     $('#plant-details').html(
-            `<h2 class="plant-name">${plant.name}</h2>
-            <ul>
-                <li>Planted: ${plant.planted.toLocaleString('en-US', options)}</li>
-                <li>Water every: ${plant.waterEvery} days</li>
-                <li>Water on: ${plant.nextWater().toLocaleString('en-US', options)}</li>
-                <li>Harvest every: ${plant.harvestEvery} days</li>
-                <li>Harvest on: ${plant.nextHarvest().toLocaleString('en-US', options)}</li>
-            </ul>
-            <button type="button" class="edit-button">Edit</button>
-            <button type="button" class="delete-button">Delete</button>
-            <button type="button" class="back-button">Back</button>`);
+            `<div class="${plant.name}">
+                <h2 class="plant-name">${plant.name}</h2>
+                <ul>
+                    <li class="planted">Planted: <span class="editable">${plant.planted.toLocaleString('en-US', options)}</span> <button type="button" class="edit-button">Edit</button><form class="edit" hidden><input type="text"><button type="submit">Submit</button></form></li>
+                    <li class="water">Water every: <span class="editable">${plant.waterEvery}</span><form class="edit" hidden><input type="text"><button type="submit">Submit</button></form> days <button type="button" class="edit-button">Edit</button></li>
+                    <li class="waterOn">Water on: <span class="editable">${plant.nextWater().toLocaleString('en-US', options)}</span> <button type="button" class="edit-button">Edit</button><form class="edit" hidden><input type="text"><button type="submit">Submit</button></form></li>
+                    <li class="harvest">Harvest every: <span class="editable">${plant.harvestEvery}</span> days <button type="button" class="edit-button">Edit</button><form class="edit" hidden><input type="text"><button type="submit">Submit</button></form></li>
+                    <li class="harvestOn">Harvest on: <span class="editable">${plant.nextHarvest().toLocaleString('en-US', options)}</span> <button type="button" class="edit-button">Edit</button><form class="edit" hidden><input type="text"><button type="submit">Submit</button></form></li>
+                </ul>
+                <button type="button" class="delete-button">Delete</button>
+                <button type="button" class="back-button">Back</button>
+            </div>`);
 };
 
 function getTasks(callbackFn) {
@@ -193,7 +193,6 @@ function watchPlantDetailsClick() {
         $('#my-garden').prop('hidden', true);
         $('#plant-details').prop('hidden', false);
         const plant = event.target.textContent;
-        console.log(plant);
         displayPlantDetails(MOCK_GARDEN_DATA, plant);
     });
 };
@@ -226,12 +225,33 @@ function watchDeletePlant() {
         const array = MOCK_GARDEN_DATA.gardens[0].plants;
         const target = event.target.closest('div').className;
         const indexOf = array.findIndex(i => i.name === target);
-        console.log(indexOf);
         array.splice(indexOf, 1);
         $('#plant-details').prop('hidden', true);
         getAndDisplayGarden();
         getAndDisplayTasks();
         $('#my-garden').prop('hidden', false);
+    });
+};
+
+function watchClickEdit() {
+
+    $('#plant-details').on('click', '.edit-button', event => {
+        const formTarget = event.target.closest('li').className;
+        $('#plant-details').find(`.${formTarget}`).find('form').prop('hidden', false);
+        $('#plant-details').find(`.${formTarget}`).find('.edit-button').prop('hidden', true);
+        $('#plant-details').find(`.${formTarget}`).find('span').prop('hidden', true);
+    });
+};
+
+function watchEditSubmit() {
+    $('#plant-details').on('submit', '.edit', event => {
+        event.preventDefault();
+        queryTarget = event.target.closest('li').className;
+        query = $('#plant-details').find(`.${queryTarget}`).find('input').val();
+        console.log(query);
+        const array = MOCK_GARDEN_DATA.gardens[0].plants;
+        const target = event.target.closest('div').className;
+        const indexOf = array.findIndex(i => i.name === target);
     })
 }
 
@@ -243,4 +263,6 @@ $(function() {
     watchLoginSubmit();
     watchLogout();
     watchDeletePlant();
+    watchClickEdit();
+    watchEditSubmit();
 });
