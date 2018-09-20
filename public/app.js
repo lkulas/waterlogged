@@ -1,5 +1,5 @@
 
-
+const options = { weekday: 'long', month: 'long', day: 'numeric' };
 
 const MOCK_GARDEN_DATA = {
     gardens: [
@@ -137,19 +137,17 @@ function displayPlantDetails(data, target) {
     console.log(indexOf);
     const plant = data.gardens[0].plants[indexOf];
     $('#plant-details').html(
-        `<div class="${plant.name}">
-            <h2 class="plant-name">${plant.name}</h2>
+            `<h2 class="plant-name">${plant.name}</h2>
             <ul>
-                <li>Planted: ${plant.planted.toString()}</li>
+                <li>Planted: ${plant.planted.toLocaleString('en-US', options)}</li>
                 <li>Water every: ${plant.waterEvery} days</li>
-                <li>Water on: ${plant.nextWater()}</li>
+                <li>Water on: ${plant.nextWater().toLocaleString('en-US', options)}</li>
                 <li>Harvest every: ${plant.harvestEvery} days</li>
-                <li>Harvest on: ${plant.nextHarvest()}</li>
+                <li>Harvest on: ${plant.nextHarvest().toLocaleString('en-US', options)}</li>
             </ul>
             <button type="button" class="edit-button">Edit</button>
             <button type="button" class="delete-button">Delete</button>
-            <button type="button" class="back-button">Back</button>
-        </div>`);
+            <button type="button" class="back-button">Back</button>`);
 };
 
 function getTasks(callbackFn) {
@@ -180,9 +178,8 @@ function displayTasks(data) {
         tasks.sort(function(a, b) {
             return  +new Date(a.date) - +new Date(b.date);
         });
-        console.log(tasks);
         for (let i = 0; i < tasks.length; i++) {
-            $('#tasks-list').append(`<li>${tasks[i].date.toString()}: ${tasks[i].task} ${tasks[i].name}</li>`)
+            $('#tasks-list').append(`<li>${tasks[i].date.toLocaleString('en-US', options)}: ${tasks[i].task} ${tasks[i].name}</li>`)
         };
     };
 };
