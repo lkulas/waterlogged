@@ -252,7 +252,7 @@ function watchLoginSubmit() {
         event.preventDefault();
         $('.username').val('');
         $('.password').val('');
-        window.location.href = '../garden/my-garden.html';
+        window.location.href = 'my-garden.html';
         getAndDisplayGarden();
     });
 };
