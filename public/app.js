@@ -18,7 +18,7 @@ function nextWater(data) {
 };
 
 function getGarden(callbackFn) {
-    setTimeout(function(){ callbackFn(MOCK_GARDEN_DATA)}, 100);
+    //setTimeout(function(){ callbackFn(MOCK_GARDEN_DATA)}, 100);
 };
 
 function displayGarden(data) {
@@ -103,7 +103,7 @@ function displayPlantDetails(data, target) {
 };
 
 function getTasks(callbackFn) {
-    setTimeout(function(){ callbackFn(MOCK_GARDEN_DATA)}, 100);
+    //setTimeout(function(){ callbackFn(MOCK_GARDEN_DATA)}, 100);
 };
 
 function displayTasks(data) {
@@ -203,14 +203,18 @@ function watchRegisterSubmit() {
         event.preventDefault();
         const username = $('.register-username').val();
         const password = $('.register-password').val();
-        registerUser(username, password);  
+        const firstName = $('.register-firstName').val();
+        const lastName = $('.register-lastName').val();
+        registerUser(username, password, firstName, lastName);  
     });
 };
 
-function registerUser(_username, _password) {
+function registerUser(_username, _password, _firstName, _lastName) {
     const user = {
       username: _username,
-      password: _password
+      password: _password,
+      firstName: _firstName,
+      lastName: _lastName
     };
     $.ajax({
         url: '/api/users',
