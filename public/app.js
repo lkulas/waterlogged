@@ -257,6 +257,13 @@ function watchLoginSubmit() {
     });
 };
 
+function watchClickRegister() {
+    $('#login').on('click', '.register', event => {
+        $('#login').prop('hidden', true);
+        $('#register').prop('hidden', false);
+    })
+}
+
 function watchRegisterSubmit() {
     $('#register').on('submit', '#register-form', event => {
         event.preventDefault();
@@ -284,13 +291,15 @@ function registerUser(_username, _password, _matchPassword, callback) {
 };
 
 function registerUserSuccess() {
-    //window.location.href = 'index.html';
-    alert('Registration successful!');
+    $('#register-success').prop('hidden', false);
+    $('#register').prop('hidden', true);
+    $('#login').prop('hidden', false);
 };
 
 function watchLogout() {
     $('#logout').on('click', 'button', event => {
-        window.location.href = '../public/index.html';
+        event.preventDefault();
+        window.location.href = 'index.html';
     });
 };
 
@@ -339,4 +348,5 @@ $(function() {
     watchClickEdit();
     watchEditSubmit();
     watchRegisterSubmit();
+    watchClickRegister();
 });
