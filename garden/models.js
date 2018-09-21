@@ -1,4 +1,5 @@
 'use strict';
+
 const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
@@ -9,20 +10,38 @@ const GardenSchema = mongoose.Schema({
     required: true,
     unique: true
   },
-  password: {
+  name: {
     type: String,
     required: true
   },
-  firstName: {type: String, default: ''},
-  lastName: {type: String, default: ''}
+  planted: {
+    type: Date
+  },
+  waterEvery: {
+    type: Number,
+    required: true
+  },
+  harvestEvery: {
+    type: Number,
+  },
+  lastHarvested: {
+    type: Date
+  },
+  lastWatered: {
+    type: Date
+  }
 });
 
 GardenSchema.methods.serialize = function() {
   return {
     id: this._id,
-    username: this.username || '',
-    firstName: this.firstName || '',
-    lastName: this.lastName || ''
+    username: this.username,
+    name: this.name,
+    planted: this.planted || '',
+    waterEvery: this.waterEvery,
+    harvestEvery: this.harvestEvery || '',
+    lastHarvested: this.lastHarvested || '',
+    lastWatered: this.lastWatered || ''
   };
 };
 

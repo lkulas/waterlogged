@@ -9,9 +9,6 @@ const { TEST_DATABASE_URL } = require('../config');
 
 const expect = chai.expect;
 
-// This let's us make HTTP requests
-// in our tests.
-// see: https://github.com/chaijs/chai-http
 chai.use(chaiHttp);
 
 describe('/api/user', function () {
@@ -332,7 +329,6 @@ describe('/api/user', function () {
           });
       });
       it('Should reject users with duplicate username', function () {
-        // Create an initial user
         return User.create({
           username,
           password,
@@ -340,7 +336,6 @@ describe('/api/user', function () {
           lastName
         })
           .then(() =>
-            // Try to create a second user with the same username
             chai.request(app).post('/api/users').send({
               username,
               password,
