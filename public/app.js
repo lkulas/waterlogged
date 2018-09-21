@@ -9,6 +9,14 @@ function addDays(date, days) {
   return result;
 };
 
+function nextWater(data) {
+    return addDays(data.lastWatered, data.waterEvery);
+};
+
+  function nextHarvest(data) {
+    return addDays(data.lastHarvested, data.harvestEvery);
+};
+
 function getGarden(callbackFn) {
     setTimeout(function(){ callbackFn(MOCK_GARDEN_DATA)}, 100);
 };

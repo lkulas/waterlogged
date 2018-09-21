@@ -18,17 +18,11 @@ const GardenSchema = mongoose.Schema({
     type: Date
   },
   waterEvery: {
-    type: Number
+    type: Number,
     required: true
-  },
-  nextWater: function() {
-    return addDays(this.lastWatered, this.waterEvery)
   },
   harvestEvery: {
     type: Number,
-  },
-  nextHarvest: function() {
-    return addDays(this.lastHarvested, this.harvestEvery)
   },
   lastHarvested: {
     type: Date
@@ -38,12 +32,6 @@ const GardenSchema = mongoose.Schema({
   }
 });
 
-function addDays(date, days) {
-  const result = new Date(date);
-  result.setDate(result.getDate() + days);
-  return result;
-};
-
 GardenSchema.methods.serialize = function() {
   return {
     id: this._id,
@@ -51,9 +39,7 @@ GardenSchema.methods.serialize = function() {
     name: this.name,
     planted: this.planted || '',
     waterEvery: this.waterEvery,
-    nextWater: this.nextWater,
     harvestEvery: this.harvestEvery || '',
-    nextHarvest: this.nextHarvest || '',
     lastHarvested: this.lastHarvested || '',
     lastWatered: this.lastWatered || ''
   };
