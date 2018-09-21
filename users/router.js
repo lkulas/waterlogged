@@ -10,7 +10,7 @@ const jsonParser = bodyParser.json();
 
 // Post to register a new user
 router.post('/', jsonParser, (req, res) => {
-  const requiredFields = ['username', 'password', 'matchPassword'];
+  const requiredFields = ['username', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
 
   if (missingField) {
@@ -22,15 +22,7 @@ router.post('/', jsonParser, (req, res) => {
     });
   }
 
-  if (req.body.password != req.body.matchPassword) {
-    return res.status(422).json({
-      code: 422,
-      reason: 'ValidationError',
-      message: 'Passwords do not match'
-    })
-  }
-
-  const stringFields = ['username', 'password', 'matchPassword', 'firstName', 'lastName'];
+  const stringFields = ['username', 'password', 'firstName', 'lastName'];
   const nonStringField = stringFields.find(
     field => field in req.body && typeof req.body[field] !== 'string'
   );
@@ -51,7 +43,7 @@ router.post('/', jsonParser, (req, res) => {
   // trimming them and expecting the user to understand.
   // We'll silently trim the other fields, because they aren't credentials used
   // to log in, so it's less of a problem.
-  const explicityTrimmedFields = ['username', 'password', 'matchPassword'];
+  const explicityTrimmedFields = ['username', 'password'];
   const nonTrimmedField = explicityTrimmedFields.find(
     field => req.body[field].trim() !== req.body[field]
   );
@@ -140,6 +132,16 @@ router.post('/', jsonParser, (req, res) => {
       }
       res.status(500).json({code: 500, message: 'Internal server error'});
     });
+});
+
+// Never expose all your users like below in a prod application
+// we're just doing this so we have a quick way to see
+// if we're creating users. keep in mind, you can also
+// verify this in the Mongo shell.
+router.get('/', (req, res) => {
+  return User.find()
+    .then(users => res.json(users.map(user => user.serialize())))
+    .catch(err => res.status(500).json({message: 'Internal server error'}));
 });
 
 module.exports = {router};
