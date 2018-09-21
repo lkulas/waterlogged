@@ -1,106 +1,7 @@
 
-const options = { weekday: 'long', month: 'long', day: 'numeric' };
+'use strict';
 
-const MOCK_GARDEN_DATA = {
-    gardens: [
-        {
-            id: "1111111",
-            username: "User1",
-            plants: [
-                {
-                    name: "Tomatoes",
-                    planted: new Date('2018-09-18'),
-                    waterEvery: 3,
-                    nextWater: function() {
-                        return addDays(this.lastWatered, this.waterEvery)
-                    },
-                    harvestEvery: 80,
-                    nextHarvest: function() {
-                        return addDays(this.lastHarvested, this.harvestEvery)
-                    },
-                    lastHarvested: new Date('2018-09-18'),
-                    lastWatered: new Date('2018-09-18')
-                },
-                {
-                    name: "Basil",
-                    planted: new Date('2018-09-19'),
-                    waterEvery: 3,
-                    nextWater: function() {
-                        return addDays(this.lastWatered, this.waterEvery)
-                    },
-                    harvestEvery: 80,
-                    nextHarvest: function() {
-                        return addDays(this.lastHarvested, this.harvestEvery)
-                    },
-                    lastHarvested: new Date('2018-09-19'),
-                    lastWatered: new Date('2018-09-19')
-                },
-                {
-                    name: "Carrots",
-                    planted: new Date('2018-09-20'),
-                    waterEvery: 3,
-                    nextWater: function() {
-                        return addDays(this.lastWatered, this.waterEvery)
-                    },
-                    harvestEvery: 80,
-                    nextHarvest: function() {
-                        return addDays(this.lastHarvested, this.harvestEvery)
-                    },
-                    lastHarvested: new Date('2018-09-20'),
-                    lastWatered: new Date('2018-09-20')
-                },
-            ],
-        },
-        {
-            "id": "222222",
-            "username": "User2",
-            "plants": [
-                {
-                    name: "Tomatoes",
-                    planted: new Date('2018-09-18'),
-                    waterEvery: 3,
-                    nextWater: function() {
-                        return addDays(this.lastWatered, this.waterEvery)
-                    },
-                    harvestEvery: 80,
-                    nextHarvest: function() {
-                        return addDays(this.lastHarvested, this.harvestEvery)
-                    },
-                    lastHarvested: new Date('2018-09-18'),
-                    lastWatered: new Date('2018-09-18')
-                },
-                {
-                    name: "Basil",
-                    planted: new Date('2018-09-19'),
-                    waterEvery: 3,
-                    nextWater: function() {
-                        return addDays(this.lastWatered, this.waterEvery)
-                    },
-                    harvestEvery: 80,
-                    nextHarvest: function() {
-                        return addDays(this.lastHarvested, this.harvestEvery)
-                    },
-                    lastHarvested: new Date('2018-09-18'),
-                    lastWatered: new Date('2018-09-18')
-                },
-                {
-                    name: "Carrots",
-                    planted: new Date('2018-09-20'),
-                    waterEvery: 3,
-                    nextWater: function() {
-                        return addDays(this.lastWatered, this.waterEvery)
-                    },
-                    harvestEvery: 80,
-                    nextHarvest: function() {
-                        return addDays(this.lastHarvested, this.harvestEvery)
-                    },
-                    lastHarvested: new Date('2018-09-18'),
-                    lastWatered: new Date('2018-09-18')
-                },
-            ],
-        }
-    ]
-};
+const options = { weekday: 'long', month: 'long', day: 'numeric' };
 
 function addDays(date, days) {
   const result = new Date(date);
@@ -248,13 +149,34 @@ function watchGoBack() {
 };
 
 function watchLoginSubmit() {
-    $('#login').on('submit', '#login-form', event => {
+    $('#login-form').on('submit', event => {
         event.preventDefault();
-        $('.username').val('');
-        $('.password').val('');
-        window.location.href = 'my-garden.html';
-        getAndDisplayGarden();
+        const username = $('.username').val();
+        const password = $('.password').val();
+        loginUser(username, password);
     });
+};
+
+function loginUser(_username, _password) {
+    const user = {
+      username: _username,
+      password: _password
+    };
+    $.ajax({
+        url: '/api/auth/login',
+        data: JSON.stringify(user),
+        contentType: 'application/json',
+        method: 'POST',
+        error: jqXHR => {
+            $('#login-error').prop('hidden', false);
+            $('#login-error').html(`<p>Error: ${jqXHR.responseJSON.message}</p>`);
+        }
+    })
+    .done(token => {
+        localStorage.setItem('authToken', token.authToken);
+        localStorage.setItem('username', token.username);
+        window.location.href = 'my-garden.html';
+    })
 };
 
 function watchRegisterClick() {
@@ -264,6 +186,7 @@ function watchRegisterClick() {
         $('#register-error').prop('hidden', true);
         $('#register').prop('hidden', false);
         $('#register-error').html('');
+        $('#login-error').prop('hidden', true);
     })
 }
 
@@ -293,6 +216,7 @@ function registerUser(_username, _password) {
     })
     .done(() => {
         $('#register-success').prop('hidden', false);
+        $('#register-error').prop('hidden', true);
         $('#login').prop('hidden', false);
         $('#register').prop('hidden', true);
     });
