@@ -7,8 +7,10 @@
 </head>
 <body>
 	<h1>Garden Tracker</h1>
-	<div id="logout" hidden>
-		<button type="button">Logout</button>
+	<div id ="register-success" hidden>
+		<p>User successfully registered.</p>
+	</div>
+	<div id ="register-error" hidden>
 	</div>
 	<div id="login">
 		<h2>Login</h2>
@@ -21,7 +23,18 @@
 			</label>
 				<button type="submit">Submit</button>
 		</form>
-		<p>New user? <a href="register.html">Register now</a></p> 
+		<p>New user? <span class="register">Register now</span></p> 
+	</div>
+	<div id="register" hidden>
+		<form id="register-form">
+			<label>Username
+				<input type="text" class="register-username" required>
+			</label>
+			<label>Password
+				<input type="password" class="register-password" required>
+			</label>
+			<button type="submit">Submit</button>
+		</form>
 	</div>
 </body>
 </html>
