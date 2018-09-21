@@ -252,7 +252,7 @@ function watchLoginSubmit() {
         event.preventDefault();
         $('.username').val('');
         $('.password').val('');
-        window.location.href = '../garden/my-garden.html';
+        window.location.href = 'my-garden.html';
         getAndDisplayGarden();
     });
 };
@@ -260,12 +260,33 @@ function watchLoginSubmit() {
 function watchRegisterSubmit() {
     $('#register').on('submit', '#register-form', event => {
         event.preventDefault();
-        $('.username').val('');
-        $('.password').val('');
-        $('.match-password').val('');
-        window.location.href = 'index.html';
-    })
-}
+        const username = $('.username').val();
+        const password = $('.password').val();
+        const matchPassword = $('.match-password').val();
+        registerUser(username, password, matchPassword, registerUserSuccess());  
+    });
+};
+
+function registerUser(_username, _password, _matchPassword, callback) {
+  const user = {
+      username: _username,
+      password: _password,
+      matchPassword: _matchPassword
+    };
+  const settings = {
+    url: '/api/users/',
+    data: JSON.stringify(user),
+    contentType: 'application/json',
+    method: 'POST',
+    success: callback
+  };
+  $.ajax(settings);
+};
+
+function registerUserSuccess() {
+    //window.location.href = 'index.html';
+    alert('Registration successful!');
+};
 
 function watchLogout() {
     $('#logout').on('click', 'button', event => {
