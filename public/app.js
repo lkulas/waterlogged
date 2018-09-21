@@ -268,14 +268,15 @@ function watchRegisterSubmit() {
 };
 
 function registerUser(_username, _password, _matchPassword, callback) {
-  const settings = {
-    url: '/api/users/',
-    data: {
+  const user = {
       username: _username,
       password: _password,
       matchPassword: _matchPassword
-    },
-    dataType: 'json',
+    };
+  const settings = {
+    url: '/api/users/',
+    data: JSON.stringify(user),
+    contentType: 'application/json',
     method: 'POST',
     success: callback
   };
@@ -283,7 +284,7 @@ function registerUser(_username, _password, _matchPassword, callback) {
 };
 
 function registerUserSuccess() {
-    window.location.href = 'index.html';
+    //window.location.href = 'index.html';
     alert('Registration successful!');
 };
 
