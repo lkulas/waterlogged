@@ -257,40 +257,50 @@ function watchLoginSubmit() {
     });
 };
 
+function watchRegisterClick() {
+    $('#login').on('click', '.register', event => {
+        $('#login').prop('hidden', true);
+        $('#register-success').prop('hidden', true);
+        $('#register-error').prop('hidden', true);
+        $('#register').prop('hidden', false);
+        $('#register-error').html('');
+    })
+}
+
 function watchRegisterSubmit() {
-    $('#register').on('submit', '#register-form', event => {
+    $('#register-form').on('submit', event => {
         event.preventDefault();
-        const username = $('.username').val();
-        const password = $('.password').val();
-        const matchPassword = $('.match-password').val();
-        registerUser(username, password, matchPassword, registerUserSuccess());  
+        const username = $('.register-username').val();
+        const password = $('.register-password').val();
+        registerUser(username, password);  
     });
 };
 
-function registerUser(_username, _password, _matchPassword, callback) {
-  const user = {
+function registerUser(_username, _password) {
+    const user = {
       username: _username,
-      password: _password,
-      matchPassword: _matchPassword
+      password: _password
     };
-  const settings = {
-    url: '/api/users/',
-    data: JSON.stringify(user),
-    contentType: 'application/json',
-    method: 'POST',
-    success: callback
-  };
-  $.ajax(settings);
-};
-
-function registerUserSuccess() {
-    //window.location.href = 'index.html';
-    alert('Registration successful!');
+    $.ajax({
+        url: '/api/users',
+        data: JSON.stringify(user),
+        contentType: 'application/json',
+        method: 'POST',
+        error: jqXHR => {
+            $('#register-error').prop('hidden', false);
+            $('#register-error').html(`<p>Error: ${jqXHR.responseJSON.message}</p>`);
+        }
+    })
+    .done(() => {
+        $('#register-success').prop('hidden', false);
+        $('#login').prop('hidden', false);
+        $('#register').prop('hidden', true);
+    });
 };
 
 function watchLogout() {
     $('#logout').on('click', 'button', event => {
-        window.location.href = '../public/index.html';
+        window.location.href = 'index.html';
     });
 };
 
@@ -339,4 +349,5 @@ $(function() {
     watchClickEdit();
     watchEditSubmit();
     watchRegisterSubmit();
+    watchRegisterClick();
 });
