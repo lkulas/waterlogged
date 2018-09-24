@@ -49,7 +49,7 @@ function loginUser(_username, _password) {
     })
     .done(token => {
         localStorage.setItem('authToken', token.authToken);
-        localStorage.setItem('username', token.username);
+        localStorage.setItem('username', user.username);
         window.location.href = 'my-garden.html';
     })
 };

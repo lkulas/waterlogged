@@ -20,16 +20,39 @@ function nextHarvest(data) {
     return addDays(data.lastHarvested, data.harvestEvery);
 };
 
-// DONE
-function getData(callback) {
-    let token = localStorage.getItem('authToken');
+// GET - currently getting all records
+function getData(_data, callback) {
+    const token = localStorage.getItem('authToken');
     $.ajax({
         url: '/api/my-garden',
         contentType: 'application/json',
         method: 'GET',
         headers: {
-            "Authorization": 'Bearer ' + token
+            'Authorization': 'Bearer ' + token
         },
+        data: _data,
+        error: jqXHR => {
+            alert(jqXHR.responseJSON.message);
+        }
+    })
+    .done(results => {
+        callback(results);
+    });
+};
+
+// POST
+function postData(callback) {
+    const _username = localStorage.getItem('username');
+    let plantInfo = {
+        name: 'Tomatoes',
+        waterEvery: 3,
+        username: _username
+    };
+    $.ajax({
+        url: '/api/my-garden',
+        contentType: 'application/json',
+        method: 'POST',
+        data: JSON.stringify(plantInfo);
         error: jqXHR => {
             alert(jqXHR.responseJSON.message);
         }
@@ -217,6 +240,13 @@ function watchAddPlant() {
         $('#add-plant-form').prop('hidden', false);
     });
 };
+
+function watchAddPlantSubmit() {
+    $('#add-plant-form').on('submit', event => {
+        event.preventDefault();
+
+    })
+}
 
 $(function() {
     getAndDisplayGarden();
