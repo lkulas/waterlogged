@@ -32,7 +32,7 @@ passport.use(jwtStrategy);
 
 app.use('/api/users/', usersRouter);
 app.use('/api/auth/', authRouter);
-app.use('/api/garden/', gardenRouter);
+app.use('/api/my-garden/', gardenRouter);
 app.use(express.static('public'));
 
 const jwtAuth = passport.authenticate('jwt', { session: false });
