@@ -3,20 +3,24 @@
 
 const options = { weekday: 'long', month: 'long', day: 'numeric' };
 
+// DONE
 function addDays(date, days) {
   const result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
 };
 
+// DONE
 function nextWater(data) {
     return addDays(data.lastWatered, data.waterEvery);
 };
 
-  function nextHarvest(data) {
+// DONE
+function nextHarvest(data) {
     return addDays(data.lastHarvested, data.harvestEvery);
 };
 
+// DONE
 function getData(callback) {
     let token = localStorage.getItem('authToken');
     $.ajax({
@@ -35,6 +39,7 @@ function getData(callback) {
     });
 };
 
+// DONE
 function displayGarden(data) {
     $('#plant-list').html('');
     if (data.length === 0) {
@@ -51,6 +56,7 @@ function displayGarden(data) {
     };
 };
 
+// DONE
 function getAndDisplayGarden() {
     getData(displayGarden);
 };
@@ -206,6 +212,12 @@ function watchEditSubmit() {
     });
 };
 
+function watchAddPlant() {
+    $('.add-plant-button').on('click', event => {
+        $('#add-plant-form').prop('hidden', false);
+    });
+};
+
 $(function() {
     getAndDisplayGarden();
     getAndDisplayTasks();
@@ -215,4 +227,5 @@ $(function() {
     watchDeletePlant();
     watchClickEdit();
     watchEditSubmit();
+    watchAddPlant();
 });

@@ -20,7 +20,20 @@
 		<div id="plant-list">
 		</div>
 		<div id="add-plant">
-			<button type="button">Add Plant</button>
+			<form id ="add-plant-form" hidden>
+				<label>Name
+					<input type="text" placeholder="Tomatoes">
+				</label>
+				<label>Planted (optional)
+					<input type="date">
+				</label>
+				<label>Water every <input type="number"> days
+				</label>
+				<label>Harvest every <input type="number"> days (optional)
+				</label>
+				<button type="submit">Submit</button>
+			</form>
+			<button type="button" class="add-plant-button">Add Plant</button>
 		</div>
 	</div>
 	<div id="plant-details" hidden>
