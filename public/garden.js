@@ -20,7 +20,7 @@ function nextWater(data) {
 function getData(callback) {
     let token = localStorage.getItem('authToken');
     $.ajax({
-        url: '/api/my-garden/gardens',
+        url: '/api/my-garden',
         contentType: 'application/json',
         method: 'GET',
         headers: {

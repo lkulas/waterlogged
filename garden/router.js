@@ -14,7 +14,7 @@ const jsonParser = bodyParser.json();
 
 //GET 
 
-router.get('/gardens', jwtAuth, (req, res) => {
+router.get('/', jwtAuth, (req, res) => {
 	Garden
 		.find()
 		.then(gardens => {
