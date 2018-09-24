@@ -3,7 +3,7 @@
 <head>
 	<title>Garden Tracker</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="app.js"></script>
+	<script src="garden.js"></script>
 </head>
 <body>
 	<h1>Garden Tracker</h1>
@@ -18,6 +18,22 @@
 	<div id="my-garden">
 		<h2>My Garden</h2>
 		<div id="plant-list">
+		</div>
+		<div id="add-plant">
+			<form id ="add-plant-form" hidden>
+				<label>Name
+					<input type="text" placeholder="Tomatoes">
+				</label>
+				<label>Planted (optional)
+					<input type="date">
+				</label>
+				<label>Water every <input type="number"> days
+				</label>
+				<label>Harvest every <input type="number"> days (optional)
+				</label>
+				<button type="submit">Submit</button>
+			</form>
+			<button type="button" class="add-plant-button">Add Plant</button>
 		</div>
 	</div>
 	<div id="plant-details" hidden>
