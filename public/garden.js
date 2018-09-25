@@ -3,21 +3,14 @@
 
 const options = { weekday: 'long', month: 'long', day: 'numeric' };
 
-// DONE
 function addDays(date, days) {
   const result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
 };
 
-// DONE
 function nextWater(data) {
     return addDays(data.lastWatered, data.waterEvery);
-};
-
-// DONE
-function nextHarvest(data) {
-    return addDays(data.lastHarvested, data.harvestEvery);
 };
 
 // GET - currently getting all records
@@ -57,7 +50,21 @@ function postData(plantInfo) {
     });
 };
 
-// DONE
+function watchPlantDetailsClick() {
+    $('#my-garden').on('click', 'h3', event => {
+        const plant = event.target.textContent;
+        $(`.${plant}`).toggle();
+    });
+};
+
+function getDate(date) {
+    if (date != null) {
+        return new Date(date).toLocaleString('en-US', options);
+    } else {
+        return '';
+    };
+};
+
 function displayGarden(data) {
     $('#plant-list').html('');
     console.log(data);
@@ -70,25 +77,11 @@ function displayGarden(data) {
             $('#plant-list').append(
             `<div>
                 <h3>${data[i].name}</h3>
-            </div>`);
-        }
-    };
-};
-
-// DONE
-function getAndDisplayGarden() {
-    getData(displayGarden);
-};
-
-function displayPlantDetails(data, target) {
-    const indexOf = data.gardens[0].plants.findIndex(i => i.name === target);
-    const plant = data.gardens[0].plants[indexOf];
-    $('#plant-details').html(
-            `<div class="${plant.name}">
-                <h2 class="plant-name">${plant.name}</h2>
+            </div>
+            <div class="${data[i].name}" hidden>
                 <ul>
                     <li class="planted">Planted: 
-                        <span class="editable">${plant.planted.toLocaleString('en-US', options)}</span> 
+                        <span class="editable">${getDate(data[i].planted)}</span> 
                         <button type="button" class="edit-button">Edit</button>
                         <form class="edit" hidden>
                             <label>Date
@@ -98,7 +91,7 @@ function displayPlantDetails(data, target) {
                         </form>
                     </li>
                     <li class="water">Water every: 
-                        <span class="editable">${plant.waterEvery}</span>
+                        <span class="editable">${data[i].waterEvery}</span>
                         <form class="edit" hidden>
                             <input type="number">
                             <button type="submit">Submit</button>
@@ -107,26 +100,7 @@ function displayPlantDetails(data, target) {
                         <button type="button" class="edit-button">Edit</button>
                         </li>
                     <li class="waterOn">Water on: 
-                        <span class="editable">${plant.nextWater().toLocaleString('en-US', options)}</span> 
-                        <button type="button" class="edit-button">Edit</button>
-                        <form class="edit" hidden>
-                            <label>Date
-                                <input type="date">
-                            </label>
-                            <button type="submit">Submit</button>
-                        </form>
-                    </li>
-                    <li class="harvest">Harvest every: 
-                        <span class="editable">${plant.harvestEvery}</span>
-                        <form class="edit" hidden>
-                            <input type="number">
-                            <button type="submit">Submit</button>
-                        </form> 
-                        days 
-                        <button type="button" class="edit-button">Edit</button>
-                        </li>
-                    <li class="harvestOn">Harvest on: 
-                        <span class="editable">${plant.nextHarvest().toLocaleString('en-US', options)}</span> 
+                        <span class="editable">${nextWater(data[i]).toLocaleString('en-US', options)}</span> 
                         <button type="button" class="edit-button">Edit</button>
                         <form class="edit" hidden>
                             <label>Date
@@ -137,8 +111,13 @@ function displayPlantDetails(data, target) {
                     </li>
                 </ul>
                 <button type="button" class="delete-button">Delete</button>
-                <button type="button" class="back-button">Back</button>
             </div>`);
+        }
+    };
+};
+
+function getAndDisplayGarden() {
+    getData(displayGarden);
 };
 
 function displayTasks(data) {
@@ -168,22 +147,6 @@ function displayTasks(data) {
 
 function getAndDisplayTasks() {
     getData(displayTasks);
-};
-
-function watchPlantDetailsClick() {
-    $('#my-garden').on('click', 'h3', event => {
-        $('#my-garden').prop('hidden', true);
-        $('#plant-details').prop('hidden', false);
-        const plant = event.target.textContent;
-        displayPlantDetails(MOCK_GARDEN_DATA, plant);
-    });
-};
-
-function watchGoBack() {
-    $('#plant-details').on('click', '.back-button', event => {
-        $('#plant-details').prop('hidden', true);
-        $('#my-garden').prop('hidden', false);
-    });
 };
 
 function watchLogout() {
@@ -253,7 +216,6 @@ $(function() {
     getAndDisplayGarden();
     getAndDisplayTasks();
     watchPlantDetailsClick();
-    watchGoBack();
     watchLogout();
     watchDeletePlant();
     watchClickEdit();

@@ -33,9 +33,9 @@ GardenSchema.methods.serialize = function() {
     id: this._id,
     username: this.username,
     name: this.name,
-    planted: this.planted || '',
+    planted: this.planted || null,
     waterEvery: this.waterEvery,
-    lastHarvested: this.lastHarvested || '',
+    lastHarvested: this.lastHarvested || null,
     lastWatered: this.lastWatered || new Date()
   };
 };
