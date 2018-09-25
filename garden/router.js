@@ -26,7 +26,7 @@ router.get('/', jwtAuth, (req, res) => {
 });
 
 // POST
-router.post('/', (req, res) => {
+router.post('/', jsonParser, (req, res) => {
 	const requiredFields = ['name', 'username', 'waterEvery'];
 	for (let i = 0; i < requiredFields.length; i++) {
 		const field = requiredFields[i];
@@ -42,7 +42,6 @@ router.post('/', (req, res) => {
 			name: req.body.name,
 			waterEvery: req.body.waterEvery,
 			planted: req.body.planted,
-			harvestEvery: req.body.harvestEvery,
 			lastHarvested: '',
 			lastWatered: ''
 		})
