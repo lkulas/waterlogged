@@ -20,28 +20,47 @@ function nextHarvest(data) {
     return addDays(data.lastHarvested, data.harvestEvery);
 };
 
-// DONE
+// GET - currently getting all records
 function getData(callback) {
-    let token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('authToken');
     $.ajax({
         url: '/api/my-garden',
         contentType: 'application/json',
         method: 'GET',
         headers: {
-            "Authorization": 'Bearer ' + token
+            'Authorization': 'Bearer ' + token
         },
         error: jqXHR => {
             alert(jqXHR.responseJSON.message);
         }
     })
-    .done(data => {
-        callback(data);
+    .done(results => {
+        callback(results);
+    });
+};
+
+// POST
+function postData(plantInfo) {
+    $.ajax({
+        url: '/api/my-garden',
+        contentType: 'application/json',
+        method: 'POST',
+        data: JSON.stringify(plantInfo),
+        dataType: 'json',
+        error: jqXHR => {
+            alert(jqXHR.responseJSON);
+        }
+    })
+    .done(() => {
+        getAndDisplayGarden();
+        getAndDisplayTasks();;
     });
 };
 
 // DONE
 function displayGarden(data) {
     $('#plant-list').html('');
+    console.log(data);
     if (data.length === 0) {
         $('#plant-list').html(
             `<p>There are no plants in your garden!</p>`
@@ -50,7 +69,7 @@ function displayGarden(data) {
         for (let i = 0; i < data.length; i++) {
             $('#plant-list').append(
             `<div>
-                <h3>${data.name}</h3>
+                <h3>${data[i].name}</h3>
             </div>`);
         }
     };
@@ -133,14 +152,9 @@ function displayTasks(data) {
         for (let i = 0; i < data.length; i++) {
             tasks.push(
             {
-                date: data.gardens[0].plants[i].nextWater(),
-                name: data.gardens[0].plants[i].name,
+                date: nextWater(data[i]),
+                name: data[i].name,
                 task: 'Water'
-            },
-            {
-                date: data.gardens[0].plants[i].nextHarvest(),
-                name: data.gardens[0].plants[i].name,
-                task: 'Harvest'
             });
         };
         tasks.sort(function(a, b) {
@@ -218,6 +232,23 @@ function watchAddPlant() {
     });
 };
 
+function watchAddPlantSubmit() {
+    $('#add-plant-form').on('submit', event => {
+        event.preventDefault();
+        const plantInfo = {
+            "username": localStorage.getItem('username'),
+            "name": $('#plant-name').val(),
+            "waterEvery": $('#water-every').val(),
+            "planted": new Date($('#planted-date').val()),
+        };
+        $('#plant-name').val('');
+        $('#water-every').val('');
+        $('#planted-date').val('');
+        $('#add-plant-form').prop('hidden', true);
+        postData(plantInfo);
+    });
+}
+
 $(function() {
     getAndDisplayGarden();
     getAndDisplayTasks();
@@ -228,4 +259,5 @@ $(function() {
     watchClickEdit();
     watchEditSubmit();
     watchAddPlant();
+    watchAddPlantSubmit();
 });

@@ -8,7 +8,6 @@ const GardenSchema = mongoose.Schema({
   username: {
     type: String,
     required: true,
-    unique: true
   },
   name: {
     type: String,
@@ -20,9 +19,6 @@ const GardenSchema = mongoose.Schema({
   waterEvery: {
     type: Number,
     required: true
-  },
-  harvestEvery: {
-    type: Number,
   },
   lastHarvested: {
     type: Date
@@ -39,9 +35,8 @@ GardenSchema.methods.serialize = function() {
     name: this.name,
     planted: this.planted || '',
     waterEvery: this.waterEvery,
-    harvestEvery: this.harvestEvery || '',
     lastHarvested: this.lastHarvested || '',
-    lastWatered: this.lastWatered || ''
+    lastWatered: this.lastWatered || new Date()
   };
 };
 
