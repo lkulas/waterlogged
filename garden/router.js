@@ -42,14 +42,33 @@ router.post('/', jsonParser, (req, res) => {
 			name: req.body.name,
 			waterEvery: req.body.waterEvery,
 			planted: req.body.planted,
-			lastHarvested: '',
-			lastWatered: ''
+			lastWatered: req.body.planted
 		})
 		.then(Garden => res.status(201).json(Garden.serialize()))
 		.catch(err => {
 			console.error(err);
-			res.status(500).json({error: "Internal server error"});
+			res.status(500).json({error: 'Internal server error'});
 		});
+});
+
+// PUT
+router.put('/:id', (req, res) => {
+	if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+		res.status(400).json({
+			error: 'Request path id and request body id must match'
+		});
+	}
+	const updated = {};
+	const updateableFields = ['name', 'waterEvery', 'lastWatered'];
+	updateableFields.forEach(field => {
+		if (field in req.body) {
+			updated[field] = req.body[field];
+		}
+	});
+	Garden
+		.findByIdAndUpdate(req.params.id, {$set: updated}, {new: true})
+		.then(updatedPlant => res.status(204).end())
+		.catch(err => res.status(500).json({error: 'Internal server error'}));
 });
 
 module.exports = {router};

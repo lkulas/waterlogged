@@ -7,21 +7,19 @@ mongoose.Promise = global.Promise;
 const GardenSchema = mongoose.Schema({
   username: {
     type: String,
-    required: true,
+    required: true
   },
   name: {
     type: String,
     required: true
   },
   planted: {
-    type: Date
+    type: Date,
+    required: true
   },
   waterEvery: {
     type: Number,
     required: true
-  },
-  lastHarvested: {
-    type: Date
   },
   lastWatered: {
     type: Date
@@ -33,10 +31,9 @@ GardenSchema.methods.serialize = function() {
     id: this._id,
     username: this.username,
     name: this.name,
-    planted: this.planted || null,
+    planted: this.planted || new Date(),
     waterEvery: this.waterEvery,
-    lastHarvested: this.lastHarvested || null,
-    lastWatered: this.lastWatered || new Date()
+    lastWatered: this.lastWatered
   };
 };
 

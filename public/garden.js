@@ -80,16 +80,6 @@ function displayGarden(data) {
             </div>
             <div class="${data[i].name}" hidden>
                 <ul>
-                    <li class="planted">Planted: 
-                        <span class="editable">${getDate(data[i].planted)}</span> 
-                        <button type="button" class="edit-button">Edit</button>
-                        <form class="edit" hidden>
-                            <label>Date
-                                <input type="date">
-                            </label>
-                            <button type="submit">Submit</button>
-                        </form>
-                    </li>
                     <li class="water">Water every: 
                         <span class="editable">${data[i].waterEvery}</span>
                         <form class="edit" hidden>
@@ -137,7 +127,7 @@ function displayTasks(data) {
             });
         };
         tasks.sort(function(a, b) {
-            return  +new Date(a.date) - +new Date(b.date);
+            return new Date(a.date) - new Date(b.date);
         });
         for (let i = 0; i < tasks.length; i++) {
             $('#tasks-list').append(`<li>${tasks[i].date.toLocaleString('en-US', options)}: ${tasks[i].task} ${tasks[i].name}</li>`)
@@ -202,11 +192,10 @@ function watchAddPlantSubmit() {
             "username": localStorage.getItem('username'),
             "name": $('#plant-name').val(),
             "waterEvery": $('#water-every').val(),
-            "planted": new Date($('#planted-date').val()),
+            "planted": new Date(),
         };
         $('#plant-name').val('');
         $('#water-every').val('');
-        $('#planted-date').val('');
         $('#add-plant-form').prop('hidden', true);
         postData(plantInfo);
     });
