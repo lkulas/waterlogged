@@ -41,8 +41,7 @@ router.post('/', jsonParser, (req, res) => {
 			username: req.body.username,
 			name: req.body.name,
 			waterEvery: req.body.waterEvery,
-			planted: req.body.planted,
-			lastWatered: req.body.planted
+			lastWatered: req.body.planted,
 		})
 		.then(Garden => res.status(201).json(Garden.serialize()))
 		.catch(err => {
@@ -59,7 +58,7 @@ router.put('/:id', (req, res) => {
 		});
 	}
 	const updated = {};
-	const updateableFields = ['name', 'waterEvery', 'lastWatered'];
+	const updateableFields = ['waterEvery', 'lastWatered'];
 	updateableFields.forEach(field => {
 		if (field in req.body) {
 			updated[field] = req.body[field];

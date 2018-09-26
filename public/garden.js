@@ -3,16 +3,6 @@
 
 const options = { weekday: 'long', month: 'long', day: 'numeric' };
 
-function addDays(date, days) {
-  const result = new Date(date);
-  result.setDate(result.getDate() + days);
-  return result;
-};
-
-function nextWater(data) {
-    return addDays(data.lastWatered, data.waterEvery);
-};
-
 // GET - currently getting all records
 function getData(callback) {
     const token = localStorage.getItem('authToken');
@@ -76,21 +66,21 @@ function displayGarden(data) {
         for (let i = 0; i < data.length; i++) {
             $('#plant-list').append(
             `<h3>${data[i].name}</h3>
-            <div class="${data[i].name}" hidden>
+            <div class="${data[i].name}" id="${data[i].id}" hidden>
                 <ul>
                     <li class="water">Water every: 
                         <span class="editable">${data[i].waterEvery}</span>
-                        <form class="edit" hidden>
-                            <input type="number">
+                        <form class="water-edit" hidden>
+                            <input type="number" id="waterEvery">
                             <button type="submit">Submit</button>
                         </form>
                         days 
                         <button type="button" class="edit-button">Edit</button>
-                        </li>
+                    </li>
                     <li class="waterOn">Water on: 
-                        <span class="editable">${nextWater(data[i]).toLocaleString('en-US', options)}</span> 
+                        <span class="editable">${data[i].nextWater}</span> 
                         <button type="button" class="edit-button">Edit</button>
-                        <form class="edit" hidden>
+                        <form class="waterOn-edit" hidden>
                             <label>Date
                                 <input type="date">
                             </label>
@@ -106,11 +96,47 @@ function displayGarden(data) {
 
 function watchClickEdit() {
     $('#plant-list').on('click', '.edit-button', event => {
-        console.log(event.target.closest('li').className);
+        console.log(event.target);
+        console.log(event.target.closest('div').id);
+        const plantTarget = event.target.closest('div').id;
         const formTarget = event.target.closest('li').className;
-        $('#plant-list').find(`.${formTarget}`).find('form').prop('hidden', false);
-        $('#plant-list').find(`.${formTarget}`).find('.edit-button').prop('hidden', true);
-        $('#plant-list').find(`.${formTarget}`).find('span').prop('hidden', true);
+        $('#plant-list').find(`#${plantTarget}`).find(`.${formTarget}`).children('form').prop('hidden', false);
+        $('#plant-list').find(`#${formTarget}`).find(`.${formTarget}`).children('.edit-button').prop('hidden', true);
+        $('#plant-list').find(`#${formTarget}`).find('span').prop('hidden', true);
+    });
+};
+
+function watchEditSubmit() {
+    $('#plant-list').on('submit', '.edit', event => {
+        event.preventDefault();
+        const plantId = event.target.closest('div').id;
+        console.log(plantId);
+        const queryTarget = event.target.closest('li').className;
+        console.log(queryTarget);
+        const query = $('#plant-list').find(`.${queryTarget}`).find('input').val();
+        console.log(query);
+        const plantInfo = {
+            id: plantId,
+
+        }
+    });
+};
+
+// PUT
+function putData(_id, plantInfo) {
+    $.ajax({
+        url: `/api/my-garden/:${_id}`,
+        contentType: 'application/json',
+        method: 'PUT',
+        data: JSON.stringify(plantInfo),
+        dataType: 'json',
+        error: jqXHR => {
+            alert(jqXHR.responseJSON);
+        }
+    })
+    .done(() => {
+        getAndDisplayGarden();
+        getAndDisplayTasks();;
     });
 };
 
@@ -129,7 +155,7 @@ function displayTasks(data) {
         for (let i = 0; i < data.length; i++) {
             tasks.push(
             {
-                date: nextWater(data[i]),
+                date: data[i].nextWater,
                 name: data[i].name,
                 task: 'Water'
             });
@@ -163,18 +189,6 @@ function watchDeletePlant() {
         getAndDisplayGarden();
         getAndDisplayTasks();
         $('#my-garden').prop('hidden', false);
-    });
-};
-
-function watchEditSubmit() {
-    $('#plant-details').on('submit', '.edit', event => {
-        event.preventDefault();
-        queryTarget = event.target.closest('li').className;
-        query = $('#plant-details').find(`.${queryTarget}`).find('input').val();
-        console.log(query);
-        const array = MOCK_GARDEN_DATA.gardens[0].plants;
-        const target = event.target.closest('div').className;
-        const indexOf = array.findIndex(i => i.name === target);
     });
 };
 
