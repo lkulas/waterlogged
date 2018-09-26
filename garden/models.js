@@ -31,7 +31,7 @@ GardenSchema.methods.serialize = function() {
     id: this._id,
     username: this.username,
     name: this.name,
-    planted: this.planted || new Date(),
+    planted: this.planted,
     waterEvery: this.waterEvery,
     lastWatered: this.lastWatered
   };

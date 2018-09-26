@@ -75,9 +75,7 @@ function displayGarden(data) {
     } else {
         for (let i = 0; i < data.length; i++) {
             $('#plant-list').append(
-            `<div>
-                <h3>${data[i].name}</h3>
-            </div>
+            `<h3>${data[i].name}</h3>
             <div class="${data[i].name}" hidden>
                 <ul>
                     <li class="water">Water every: 
@@ -104,6 +102,16 @@ function displayGarden(data) {
             </div>`);
         }
     };
+};
+
+function watchClickEdit() {
+    $('#plant-list').on('click', '.edit-button', event => {
+        console.log(event.target.closest('li').className);
+        const formTarget = event.target.closest('li').className;
+        $('#plant-list').find(`.${formTarget}`).find('form').prop('hidden', false);
+        $('#plant-list').find(`.${formTarget}`).find('.edit-button').prop('hidden', true);
+        $('#plant-list').find(`.${formTarget}`).find('span').prop('hidden', true);
+    });
 };
 
 function getAndDisplayGarden() {
@@ -155,15 +163,6 @@ function watchDeletePlant() {
         getAndDisplayGarden();
         getAndDisplayTasks();
         $('#my-garden').prop('hidden', false);
-    });
-};
-
-function watchClickEdit() {
-    $('#plant-details').on('click', '.edit-button', event => {
-        const formTarget = event.target.closest('li').className;
-        $('#plant-details').find(`.${formTarget}`).find('form').prop('hidden', false);
-        $('#plant-details').find(`.${formTarget}`).find('.edit-button').prop('hidden', true);
-        $('#plant-details').find(`.${formTarget}`).find('span').prop('hidden', true);
     });
 };
 
