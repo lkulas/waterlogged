@@ -12,7 +12,20 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 
 const jsonParser = bodyParser.json();
 
-//GET - currently getting all records
+//GET - getting all records
+router.get('/', jsonParser, jwtAuth, (req, res) => {
+	Garden
+		.find()
+		.then(gardens => {
+			res.status(200).json(gardens.map(garden => garden.serialize()));
+		})
+		.catch(err => {
+			console.error(err);
+			res.status(500).json({error: "Something went wrong"});
+		});
+});
+
+// GET
 router.get('/:username', jsonParser, jwtAuth, (req, res) => {
 	Garden
 		.find({ username: req.params.username })
