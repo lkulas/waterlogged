@@ -2,29 +2,31 @@
 
 const mongoose = require('mongoose');
 
+const options = { weekday: 'long', month: 'long', day: 'numeric' };
+
 mongoose.Promise = global.Promise;
 
 const GardenSchema = mongoose.Schema({
   username: {
     type: String,
-    required: true,
+    required: true
   },
   name: {
     type: String,
     required: true
   },
   planted: {
-    type: Date
+    type: Date,
   },
   waterEvery: {
     type: Number,
     required: true
   },
-  lastHarvested: {
-    type: Date
-  },
   lastWatered: {
     type: Date
+  },
+  nextWater: {
+    type: Date,
   }
 });
 
@@ -33,11 +35,21 @@ GardenSchema.methods.serialize = function() {
     id: this._id,
     username: this.username,
     name: this.name,
-    planted: this.planted || null,
+    planted: this.planted,
     waterEvery: this.waterEvery,
-    lastHarvested: this.lastHarvested || null,
-    lastWatered: this.lastWatered || new Date()
+    lastWatered: this.lastWatered.toLocaleString('en-US', options),
+    nextWater: nextWater(this)
   };
+};
+
+function addDays(date, days) {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+};
+
+function nextWater(data) {
+    return addDays(data.lastWatered, data.waterEvery).toLocaleString('en-US', options);
 };
 
 const Garden = mongoose.model('Garden', GardenSchema);
