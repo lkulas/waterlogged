@@ -37,7 +37,7 @@ GardenSchema.methods.serialize = function() {
     name: this.name,
     planted: this.planted,
     waterEvery: this.waterEvery,
-    lastWatered: this.lastWatered,
+    lastWatered: this.lastWatered.toLocaleString('en-US', options),
     nextWater: nextWater(this)
   };
 };

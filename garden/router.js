@@ -26,7 +26,7 @@ router.get('/', jwtAuth, (req, res) => {
 });
 
 // POST
-router.post('/', jsonParser, (req, res) => {
+router.post('/', jsonParser, jwtAuth, (req, res) => {
 	const requiredFields = ['name', 'username', 'waterEvery'];
 	for (let i = 0; i < requiredFields.length; i++) {
 		const field = requiredFields[i];
@@ -39,9 +39,10 @@ router.post('/', jsonParser, (req, res) => {
 	Garden
 		.create({
 			username: req.body.username,
+			planted: new Date(),
 			name: req.body.name,
 			waterEvery: req.body.waterEvery,
-			lastWatered: req.body.planted,
+			lastWatered: new Date()
 		})
 		.then(Garden => res.status(201).json(Garden.serialize()))
 		.catch(err => {
@@ -51,14 +52,14 @@ router.post('/', jsonParser, (req, res) => {
 });
 
 // PUT
-router.put('/:id', (req, res) => {
+router.put('/:id', jsonParser, jwtAuth, (req, res) => {
 	if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
 		res.status(400).json({
 			error: 'Request path id and request body id must match'
 		});
 	}
 	const updated = {};
-	const updateableFields = ['waterEvery', 'lastWatered'];
+	const updateableFields = ['waterEvery', 'lastWatered', 'nextWater'];
 	updateableFields.forEach(field => {
 		if (field in req.body) {
 			updated[field] = req.body[field];

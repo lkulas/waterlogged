@@ -24,10 +24,14 @@ function getData(callback) {
 
 // POST
 function postData(plantInfo) {
+    const token = localStorage.getItem('authToken');
     $.ajax({
         url: '/api/my-garden',
         contentType: 'application/json',
         method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         data: JSON.stringify(plantInfo),
         dataType: 'json',
         error: jqXHR => {
@@ -68,24 +72,26 @@ function displayGarden(data) {
             `<h3>${data[i].name}</h3>
             <div class="${data[i].name}" id="${data[i].id}" hidden>
                 <ul>
+                    <li class="waterOn">Last watered on: 
+                        <span class="editable">${data[i].lastWatered}</span> 
+                        <button type="button" class="edit-button">Edit</button>
+                        <form class="wateredOn-edit" hidden>
+                            <label>Date
+                                <input type="date" class="wateredOn-edit-input">
+                            </label>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </li>
                     <li class="water">Water every: 
                         <span class="editable">${data[i].waterEvery}</span>
-                        <form class="water-edit" hidden>
-                            <input type="number" id="waterEvery">
+                        <form class="waterEvery-edit" hidden>
+                            <input type="number" class="waterEvery-edit-input">
                             <button type="submit">Submit</button>
                         </form>
                         days 
                         <button type="button" class="edit-button">Edit</button>
                     </li>
-                    <li class="waterOn">Water on: 
-                        <span class="editable">${data[i].nextWater}</span> 
-                        <button type="button" class="edit-button">Edit</button>
-                        <form class="waterOn-edit" hidden>
-                            <label>Date
-                                <input type="date">
-                            </label>
-                            <button type="submit">Submit</button>
-                        </form>
+                    <li class="nextWater">Water next on: ${data[i].nextWater}
                     </li>
                 </ul>
                 <button type="button" class="delete-button">Delete</button>
@@ -107,26 +113,37 @@ function watchClickEdit() {
 };
 
 function watchEditSubmit() {
-    $('#plant-list').on('submit', '.edit', event => {
+    $('#plant-list').on('submit', '.waterEvery-edit', event => {
         event.preventDefault();
         const plantId = event.target.closest('div').id;
-        console.log(plantId);
-        const queryTarget = event.target.closest('li').className;
-        console.log(queryTarget);
-        const query = $('#plant-list').find(`.${queryTarget}`).find('input').val();
-        console.log(query);
+        const plantInfo = {
+            waterEvery: $('.waterEvery-edit-input').val(),
+            id: plantId
+        };
+        console.log(plantInfo);
+        putData(plantId, plantInfo);
+    });
+    $('#plant-list').on('submit', '.wateredOn-edit', event => {
+        event.preventDefault();
+        const plantId = event.target.closest('div').id;
         const plantInfo = {
             id: plantId,
-
-        }
+            lastWatered: $('.wateredOn-edit-input').val(),
+        };
+        console.log(plantInfo);
+        putData(plantId, plantInfo);
     });
 };
 
 // PUT
 function putData(_id, plantInfo) {
+    const token = localStorage.getItem('authToken');
     $.ajax({
-        url: `/api/my-garden/:${_id}`,
+        url: `/api/my-garden/${_id}`,
         contentType: 'application/json',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         method: 'PUT',
         data: JSON.stringify(plantInfo),
         dataType: 'json',
@@ -202,10 +219,11 @@ function watchAddPlantSubmit() {
     $('#add-plant-form').on('submit', event => {
         event.preventDefault();
         const plantInfo = {
-            "username": localStorage.getItem('username'),
-            "name": $('#plant-name').val(),
-            "waterEvery": $('#water-every').val(),
-            "planted": new Date(),
+            username: localStorage.getItem('username'),
+            name: $('#plant-name').val(),
+            waterEvery: $('#water-every').val(),
+            planted: new Date(),
+            lastWatered: new Date()
         };
         $('#plant-name').val('');
         $('#water-every').val('');
