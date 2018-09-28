@@ -3,7 +3,7 @@
 
 const options = { weekday: 'long', month: 'long', day: 'numeric' };
 
-// GET - currently getting all records
+// GET - getting only records for user
 function getData(callback) {
     const token = localStorage.getItem('authToken');
     const username = localStorage.getItem('username');
@@ -44,7 +44,7 @@ function postData(plantInfo) {
     })
     .done(() => {
         getAndDisplayGarden();
-        getAndDisplayTasks();;
+        getAndDisplayTasks();
     });
 };
 
@@ -114,7 +114,6 @@ function watchClickEdit() {
         const formTarget = event.target.closest('li').className;
         $('#plant-list').find(`#${plantTarget}`).find(`.${formTarget}`).children('form').toggle();
         $('#plant-list').find(`#${formTarget}`).find(`.${formTarget}`).children('.edit-button').toggle();
-        $('#plant-list').find(`#${formTarget}`).find('span').toggle();
     });
     watchEditSubmit();
 };
@@ -181,16 +180,37 @@ function displayTasks(data) {
             {
                 date: data[i].nextWater,
                 name: data[i].name,
-                task: 'Water'
+                task: 'Water',
+                id: data[i].id
             });
         };
         tasks.sort(function(a, b) {
             return new Date(a.date) - new Date(b.date);
         });
         for (let i = 0; i < tasks.length; i++) {
-            $('#tasks-list').append(`<li>${tasks[i].date.toLocaleString('en-US', options)}: ${tasks[i].task} ${tasks[i].name}</li>`)
+            $('#tasks-list').append(`
+                <div data="${tasks[i].id}">
+                    <p>${tasks[i].date.toLocaleString('en-US', options)}: ${tasks[i].task} ${tasks[i].name}</p>
+                    <form class="complete-task">
+                        <input type="checkbox" data="${tasks[i].id}">
+                    </form>
+                </div>`)
         };
     };
+};
+
+function watchClickComplete() {
+    $('#tasks-list').on('click', '.complete-task', 'input', event => {
+        console.log(event.target.closest('div').getAttribute('data'));
+        const plantId = event.target.closest('div').getAttribute('data');
+        const plantInfo = {
+            id: plantId,
+            lastWatered: new Date()
+        }
+        putData(plantId, plantInfo);
+        getAndDisplayGarden();
+        getAndDisplayTasks();
+    });
 };
 
 function getAndDisplayTasks() {
@@ -246,4 +266,5 @@ $(function() {
     watchPlantDetailsClick();
     watchLogout();
     watchAddPlant();
+    watchClickComplete();
 });
