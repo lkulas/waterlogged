@@ -224,16 +224,35 @@ function watchLogout() {
 };
 
 function watchDeletePlant() {
-    $('#plant-details').on('click', '.delete-button', event => {
-        const array = MOCK_GARDEN_DATA.gardens[0].plants;
-        const target = event.target.closest('div').className;
-        const indexOf = array.findIndex(i => i.name === target);
-        array.splice(indexOf, 1);
-        $('#plant-details').prop('hidden', true);
+    $('#plant-list').on('click', '.delete-button', event => {
+        const target = event.target.closest('div').id;
+        deletePlant(target);
         getAndDisplayGarden();
         getAndDisplayTasks();
-        $('#my-garden').prop('hidden', false);
     });
+};
+
+function deletePlant(_id) {
+    const token = localStorage.getItem('authToken');
+    $.ajax({
+        url: '/api/my-garden/' + _id,
+        contentType: 'application/json',
+        method: 'DELETE',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        error: jqXHR => {
+            alert(jqXHR.responseJSON.message);
+        }
+    })
+    .done(() => {
+        refreshPageInfo();
+    })
+};
+
+function refreshPageInfo() {
+    getAndDisplayGarden();
+    getAndDisplayTasks();
 };
 
 function watchAddPlant() {
