@@ -84,4 +84,14 @@ router.put('/:id', jsonParser, jwtAuth, (req, res) => {
 		.catch(err => res.status(500).json({error: 'Internal server error'}));
 });
 
+// DELETE
+router.delete('/:id', jwtAuth, (req, res) => {
+	Garden
+		.findByIdAndRemove(req.params.id)
+		.then(() => {
+			res.status(204).end();
+		})
+		.catch(err => res.status(500).json({error: 'Internal server error'}));
+});
+
 module.exports = {router};
