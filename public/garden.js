@@ -6,8 +6,12 @@ const options = { weekday: 'long', month: 'long', day: 'numeric' };
 // GET - currently getting all records
 function getData(callback) {
     const token = localStorage.getItem('authToken');
+    const username = localStorage.getItem('username');
+    const userInfo = {
+        user: username
+    };
     $.ajax({
-        url: '/api/my-garden',
+        url: '/api/my-garden/' + username,
         contentType: 'application/json',
         method: 'GET',
         headers: {
@@ -49,6 +53,8 @@ function watchPlantDetailsClick() {
         const plant = event.target.textContent;
         $(`.${plant}`).toggle();
     });
+    watchDeletePlant();
+    watchClickEdit();
 };
 
 function getDate(date) {
@@ -84,11 +90,11 @@ function displayGarden(data) {
                     </li>
                     <li class="water">Water every: 
                         <span class="editable">${data[i].waterEvery}</span>
+                        days
                         <form class="waterEvery-edit" hidden>
                             <input type="number" class="waterEvery-edit-input">
                             <button type="submit">Submit</button>
                         </form>
-                        days 
                         <button type="button" class="edit-button">Edit</button>
                     </li>
                     <li class="nextWater">Water next on: ${data[i].nextWater}
@@ -106,10 +112,11 @@ function watchClickEdit() {
         console.log(event.target.closest('div').id);
         const plantTarget = event.target.closest('div').id;
         const formTarget = event.target.closest('li').className;
-        $('#plant-list').find(`#${plantTarget}`).find(`.${formTarget}`).children('form').prop('hidden', false);
-        $('#plant-list').find(`#${formTarget}`).find(`.${formTarget}`).children('.edit-button').prop('hidden', true);
-        $('#plant-list').find(`#${formTarget}`).find('span').prop('hidden', true);
+        $('#plant-list').find(`#${plantTarget}`).find(`.${formTarget}`).children('form').toggle();
+        $('#plant-list').find(`#${formTarget}`).find(`.${formTarget}`).children('.edit-button').toggle();
+        $('#plant-list').find(`#${formTarget}`).find('span').toggle();
     });
+    watchEditSubmit();
 };
 
 function watchEditSubmit() {
@@ -213,6 +220,7 @@ function watchAddPlant() {
     $('.add-plant-button').on('click', event => {
         $('#add-plant-form').prop('hidden', false);
     });
+    watchAddPlantSubmit();
 };
 
 function watchAddPlantSubmit() {
@@ -237,9 +245,5 @@ $(function() {
     getAndDisplayTasks();
     watchPlantDetailsClick();
     watchLogout();
-    watchDeletePlant();
-    watchClickEdit();
-    watchEditSubmit();
     watchAddPlant();
-    watchAddPlantSubmit();
 });

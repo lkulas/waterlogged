@@ -13,9 +13,9 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 const jsonParser = bodyParser.json();
 
 //GET - currently getting all records
-router.get('/', jwtAuth, (req, res) => {
+router.get('/:username', jsonParser, jwtAuth, (req, res) => {
 	Garden
-		.find()
+		.find({ username: req.params.username })
 		.then(gardens => {
 			res.status(200).json(gardens.map(garden => garden.serialize()));
 		})
