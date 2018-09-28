@@ -25,7 +25,7 @@ router.get('/', jsonParser, jwtAuth, (req, res) => {
 		});
 });
 
-// GET
+// GET - for specific user
 router.get('/:username', jsonParser, jwtAuth, (req, res) => {
 	Garden
 		.find({ username: req.params.username })
