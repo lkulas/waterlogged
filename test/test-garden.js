@@ -4,12 +4,29 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');
 const faker = require('faker');
+const mongoose = require('mongoose');
 
 const { app, runServer, closeServer } = require('../server');
-const { User } = require('../users');
+const { Garden } = require('../garden');
 const { JWT_SECRET, TEST_DATABASE_URL } = require('../config');
 
 const expect = chai.expect;
+
+const _username = 'exampleUser1';
+
+const token = jwt.sign(
+  {
+    user: {
+      _username
+    }
+  },
+  JWT_SECRET,
+  {
+    algorithm: 'HS256',
+    subject: _username,
+    expiresIn: '7d'
+  }
+);
 
 chai.use(chaiHttp);
 
@@ -23,7 +40,7 @@ function seedGardenData() {
 
 function generateGardenData() {
   return {
-    username: User.username,
+    username: _username,
     name: faker.random.word(),
     planted: faker.date.past(),
     waterEvery: faker.random.number(),
@@ -36,11 +53,6 @@ function tearDownDb() {
 };
 
 describe('Protected endpoint', function () {
-  const username = 'exampleUser';
-  const password = 'examplePass';
-  const firstName = 'Example';
-  const lastName = 'User';
-
   before(function () {
     return runServer(TEST_DATABASE_URL);
   });
@@ -50,20 +62,31 @@ describe('Protected endpoint', function () {
   });
 
   beforeEach(function () {
-    return User.hashPassword(password).then(password =>
-      User.create({
-        username,
-        password,
-        firstName,
-        lastName
-      })
-    );
     return seedGardenData();
   });
 
   afterEach(function () {
-    return User.remove({});
     return tearDownDb();
+  });
+
+  describe('GET endpoint', function() {
+    it('should return existing records for logged in user', function() {
+      let res;
+      return chai.request(app)
+      .get('/api/my-garden/' + _username)
+      .set('Authorization', `Bearer ${token}`)
+      .then(function(_res) {
+        res = _res;
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.lengthOf.at.least(1);
+        return Garden
+          .find({ username: _username })
+          .count();
+      })
+      .then(function(count) {
+        expect(res.body).to.have.lengthOf(count);
+      })
+    });
   });
 
   describe('/api/my-garden', function () {
@@ -87,9 +110,7 @@ describe('Protected endpoint', function () {
     it('Should reject requests with an invalid token', function () {
       const token = jwt.sign(
         {
-          username,
-          firstName,
-          lastName
+          _username
         },
         'wrongSecret',
         {
@@ -97,7 +118,6 @@ describe('Protected endpoint', function () {
           expiresIn: '7d'
         }
       );
-
       return chai
         .request(app)
         .get('/api/my-garden')
@@ -118,19 +138,16 @@ describe('Protected endpoint', function () {
       const token = jwt.sign(
         {
           user: {
-            username,
-            firstName,
-            lastName
+            _username
           },
           exp: Math.floor(Date.now() / 1000) - 10 // Expired ten seconds ago
         },
         JWT_SECRET,
         {
           algorithm: 'HS256',
-          subject: username
+          subject: _username
         }
       );
-
       return chai
         .request(app)
         .get('/api/my-garden')
@@ -148,22 +165,6 @@ describe('Protected endpoint', function () {
         });
     });
     it('Should send protected data', function () {
-      const token = jwt.sign(
-        {
-          user: {
-            username,
-            firstName,
-            lastName
-          }
-        },
-        JWT_SECRET,
-        {
-          algorithm: 'HS256',
-          subject: username,
-          expiresIn: '7d'
-        }
-      );
-
       return chai
         .request(app)
         .get('/api/my-garden')
