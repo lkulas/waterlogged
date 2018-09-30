@@ -3,7 +3,7 @@
 
 const options = { weekday: 'long', month: 'long', day: 'numeric' };
 
-// GET - getting only records for user
+// GET - getting only records for logged in user
 function getData(callback) {
     const token = localStorage.getItem('authToken');
     const username = localStorage.getItem('username');
@@ -43,8 +43,7 @@ function postData(plantInfo) {
         }
     })
     .done(() => {
-        getAndDisplayGarden();
-        getAndDisplayTasks();
+        refreshPageInfo();
     });
 };
 
@@ -57,13 +56,13 @@ function watchPlantDetailsClick() {
     watchClickEdit();
 };
 
-function getDate(date) {
-    if (date != null) {
-        return new Date(date).toLocaleString('en-US', options);
-    } else {
-        return '';
-    };
-};
+//function getDate(date) {
+    //if (date != null) {
+        //return new Date(date).toLocaleString('en-US', options);
+    //} else {
+        //return '';
+    //};
+//};
 
 function displayGarden(data) {
     $('#plant-list').html('');
@@ -158,8 +157,7 @@ function putData(_id, plantInfo) {
         }
     })
     .done(() => {
-        getAndDisplayGarden();
-        getAndDisplayTasks();;
+        refreshPageInfo();
     });
 };
 
@@ -208,8 +206,7 @@ function watchClickComplete() {
             lastWatered: new Date()
         }
         putData(plantId, plantInfo);
-        getAndDisplayGarden();
-        getAndDisplayTasks();
+        refreshPageInfo();
     });
 };
 
@@ -227,8 +224,6 @@ function watchDeletePlant() {
     $('#plant-list').on('click', '.delete-button', event => {
         const target = event.target.closest('div').id;
         deletePlant(target);
-        getAndDisplayGarden();
-        getAndDisplayTasks();
     });
 };
 

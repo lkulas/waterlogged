@@ -20,7 +20,7 @@ function loginUser(_username, _password) {
         localStorage.setItem('authToken', token.authToken);
         localStorage.setItem('username', token.username);
         window.location.href = 'my-garden.html';
-    })
+    });
 };
 
 function watchLoginSubmit() {
@@ -51,7 +51,7 @@ function loginUser(_username, _password) {
         localStorage.setItem('authToken', token.authToken);
         localStorage.setItem('username', user.username);
         window.location.href = 'my-garden.html';
-    })
+    });
 };
 
 function watchRegisterClick() {
@@ -62,8 +62,9 @@ function watchRegisterClick() {
         $('#register').prop('hidden', false);
         $('#register-error').html('');
         $('#login-error').prop('hidden', true);
-    })
-}
+    });
+    watchRegisterSubmit();
+};
 
 function watchRegisterSubmit() {
     $('#register-form').on('submit', event => {
@@ -103,6 +104,5 @@ function registerUser(_username, _password, _firstName, _lastName) {
 
 $(function() {
     watchLoginSubmit();
-    watchRegisterSubmit();
     watchRegisterClick();
 });
