@@ -3,6 +3,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');
+const faker = require('faker');
 
 const { app, runServer, closeServer } = require('../server');
 const { User } = require('../users');
@@ -11,6 +12,28 @@ const { JWT_SECRET, TEST_DATABASE_URL } = require('../config');
 const expect = chai.expect;
 
 chai.use(chaiHttp);
+
+function seedGardenData() {
+  const seedData = [];
+  for (let i = 1; i <= 10; i++) {
+    seedData.push(generateGardenData());
+  };
+  return Garden.insertMany(seedData);
+};
+
+function generateGardenData() {
+  return {
+    username: User.username,
+    name: faker.random.word(),
+    planted: faker.date.past(),
+    waterEvery: faker.random.number(),
+    lastWatered: faker.date.past(),
+  };
+};
+
+function tearDownDb() {
+  return mongoose.connection.dropDatabase();
+};
 
 describe('Protected endpoint', function () {
   const username = 'exampleUser';
@@ -35,10 +58,12 @@ describe('Protected endpoint', function () {
         lastName
       })
     );
+    return seedGardenData();
   });
 
   afterEach(function () {
     return User.remove({});
+    return tearDownDb();
   });
 
   describe('/api/my-garden', function () {
