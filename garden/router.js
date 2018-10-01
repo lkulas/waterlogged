@@ -72,7 +72,7 @@ router.put('/:id', jsonParser, jwtAuth, (req, res) => {
 		});
 	}
 	const updated = {};
-	const updateableFields = ['waterEvery', 'lastWatered', 'nextWater'];
+	const updateableFields = ['waterEvery', 'lastWatered'];
 	updateableFields.forEach(field => {
 		if (field in req.body) {
 			updated[field] = req.body[field];

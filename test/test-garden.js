@@ -153,4 +153,30 @@ describe('Garden API resource', function () {
         });
     });
   });
+
+  describe('PUT endpoint', function() {
+    it('should update a record with new fields', function() {
+      const updateData = {
+        waterEvery: 7,
+        lastWatered: new Date("2018-09-30")
+      };
+      return Garden
+        .findOne()
+        .then(function(garden) {
+          updateData.id = garden.id;
+          return chai.request(app)
+          .put(`/api/my-garden/${garden.id}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send(updateData);
+        })
+        .then(function(res) {
+          expect (res).to.have.status(204);
+          return Garden.findById(updateData.id);
+        })
+        .then(function(garden) {
+          expect(garden.waterEvery).to.equal(updateData.waterEvery);
+          expect(garden.lastWatered.toDateString()).to.equal(updateData.lastWatered.toDateString());
+        });
+    });
+  });
 });
