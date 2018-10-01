@@ -179,4 +179,25 @@ describe('Garden API resource', function () {
         });
     });
   });
+
+  describe('DELETE endpoint', function() {
+    it('should delete a record by id', function() {
+      let garden;
+      return Garden
+        .findOne()
+        .then(function(_garden) {
+          garden = _garden;
+          return chai.request(app)
+            .delete(`/api/my-garden/${garden.id}`)
+            .set('Authorization', `Bearer ${token}`);
+        })
+        .then(function(res) {
+          expect(res).to.have.status(204);
+          return Garden.findById(garden.id);
+        })
+        .then(function(_garden) {
+          expect(_garden).to.be.null;
+        });
+    });
+  });
 });
