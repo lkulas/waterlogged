@@ -35,10 +35,10 @@ GardenSchema.methods.serialize = function() {
     id: this._id,
     username: this.username,
     name: this.name,
-    planted: this.planted,
+    planted: this.planted.toDateString(),
     waterEvery: this.waterEvery,
-    lastWatered: this.lastWatered.toLocaleString('en-US', options),
-    nextWater: nextWater(this)
+    lastWatered: this.lastWatered.toDateString(),
+    nextWater: nextWater(this).toDateString()
   };
 };
 
@@ -49,7 +49,7 @@ function addDays(date, days) {
 };
 
 function nextWater(data) {
-    return addDays(data.lastWatered, data.waterEvery).toLocaleString('en-US', options);
+    return addDays(data.lastWatered, data.waterEvery);
 };
 
 const Garden = mongoose.model('Garden', GardenSchema);

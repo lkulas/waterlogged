@@ -56,14 +56,6 @@ function watchPlantDetailsClick() {
     watchClickEdit();
 };
 
-//function getDate(date) {
-    //if (date != null) {
-        //return new Date(date).toLocaleString('en-US', options);
-    //} else {
-        //return '';
-    //};
-//};
-
 function displayGarden(data) {
     $('#plant-list').html('');
     console.log(data);
@@ -188,7 +180,7 @@ function displayTasks(data) {
         for (let i = 0; i < tasks.length; i++) {
             $('#tasks-list').append(`
                 <div data="${tasks[i].id}">
-                    <p>${tasks[i].date.toLocaleString('en-US', options)}: ${tasks[i].task} ${tasks[i].name}</p>
+                    <p>${tasks[i].date}: ${tasks[i].task} ${tasks[i].name}</p>
                     <form class="complete-task">
                         <input type="checkbox" data="${tasks[i].id}">
                     </form>

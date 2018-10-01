@@ -3,21 +3,68 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');
+const faker = require('faker');
+const mongoose = require('mongoose');
 
 const { app, runServer, closeServer } = require('../server');
-const { User } = require('../users');
+const { Garden } = require('../garden');
 const { JWT_SECRET, TEST_DATABASE_URL } = require('../config');
 
 const expect = chai.expect;
 
+const _username = 'exampleUser1';
+
+const token = jwt.sign(
+  {
+    user: {
+      _username
+    }
+  },
+  JWT_SECRET,
+  {
+    algorithm: 'HS256',
+    subject: _username,
+    expiresIn: '7d'
+  }
+);
+
 chai.use(chaiHttp);
 
-describe('Protected endpoint', function () {
-  const username = 'exampleUser';
-  const password = 'examplePass';
-  const firstName = 'Example';
-  const lastName = 'User';
+function seedGardenData() {
+  const seedData = [];
+  for (let i = 1; i <= 10; i++) {
+    seedData.push(generateGardenData());
+  };
+  return Garden.insertMany(seedData);
+};
 
+function addDays(date, days) {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+};
+
+function nextWater(data) {
+    return addDays(data.lastWatered, data.waterEvery);
+};
+
+function generateGardenData() {
+  let gardenData = {
+    username: _username,
+    name: faker.random.word(),
+    planted: new Date(),
+    waterEvery: faker.random.number(),
+    lastWatered: new Date(),
+  };
+  gardenData.nextWater = nextWater(gardenData);
+  return gardenData;
+};
+
+function tearDownDb() {
+  return mongoose.connection.dropDatabase();
+};
+
+describe('Garden API resource', function () {
   before(function () {
     return runServer(TEST_DATABASE_URL);
   });
@@ -27,125 +74,82 @@ describe('Protected endpoint', function () {
   });
 
   beforeEach(function () {
-    return User.hashPassword(password).then(password =>
-      User.create({
-        username,
-        password,
-        firstName,
-        lastName
-      })
-    );
+    return seedGardenData();
   });
 
   afterEach(function () {
-    return User.remove({});
+    return tearDownDb();
   });
 
-  describe('/api/my-garden', function () {
-    it('Should reject requests with no credentials', function () {
-      return chai
-        .request(app)
-        .get('/api/my-garden')
-        .then(() =>
-          expect.fail(null, null, 'Request should not succeed')
-        )
-        .catch(err => {
-          if (err instanceof chai.AssertionError) {
-            throw err;
-          }
-
-          const res = err.response;
-          expect(res).to.have.status(401);
-        });
+  describe('GET endpoint', function() {
+    it('should return existing records for logged in user', function() {
+      let res;
+      return chai.request(app)
+      .get('/api/my-garden/' + _username)
+      .set('Authorization', `Bearer ${token}`)
+      .then(function(_res) {
+        res = _res;
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.lengthOf.at.least(1);
+        return Garden
+          .find({ username: _username })
+          .count();
+      })
+      .then(function(count) {
+        expect(res.body).to.have.lengthOf(count);
+      })
     });
 
-    it('Should reject requests with an invalid token', function () {
-      const token = jwt.sign(
-        {
-          username,
-          firstName,
-          lastName
-        },
-        'wrongSecret',
-        {
-          algorithm: 'HS256',
-          expiresIn: '7d'
-        }
-      );
-
-      return chai
-        .request(app)
-        .get('/api/my-garden')
+    it('should return records with correct fields', function() {
+      let resGarden;
+      return chai.request(app)
+        .get('/api/my-garden/' + _username)
         .set('Authorization', `Bearer ${token}`)
-        .then(() =>
-          expect.fail(null, null, 'Request should not succeed')
-        )
-        .catch(err => {
-          if (err instanceof chai.AssertionError) {
-            throw err;
-          }
-
-          const res = err.response;
-          expect(res).to.have.status(401);
-        });
-    });
-    it('Should reject requests with an expired token', function () {
-      const token = jwt.sign(
-        {
-          user: {
-            username,
-            firstName,
-            lastName
-          },
-          exp: Math.floor(Date.now() / 1000) - 10 // Expired ten seconds ago
-        },
-        JWT_SECRET,
-        {
-          algorithm: 'HS256',
-          subject: username
-        }
-      );
-
-      return chai
-        .request(app)
-        .get('/api/my-garden')
-        .set('authorization', `Bearer ${token}`)
-        .then(() =>
-          expect.fail(null, null, 'Request should not succeed')
-        )
-        .catch(err => {
-          if (err instanceof chai.AssertionError) {
-            throw err;
-          }
-
-          const res = err.response;
-          expect(res).to.have.status(401);
-        });
-    });
-    it('Should send protected data', function () {
-      const token = jwt.sign(
-        {
-          user: {
-            username,
-            firstName,
-            lastName
-          }
-        },
-        JWT_SECRET,
-        {
-          algorithm: 'HS256',
-          subject: username,
-          expiresIn: '7d'
-        }
-      );
-
-      return chai
-        .request(app)
-        .get('/api/my-garden')
-        .set('authorization', `Bearer ${token}`)
-        .then(res => {
+        .then(function(res) {
           expect(res).to.have.status(200);
-          expect(res.body).to.be.an('array');
+          expect(res).to.be.json;
+          expect(res.body).to.be.a('array');
+          expect(res.body).to.have.lengthOf.at.least(1);
+          res.body.forEach(function(garden) {
+            expect(garden).to.be.a('object');
+            expect(garden).to.include.keys(
+              'username', 'id', 'name', 'waterEvery', 'lastWatered', 'planted', 'nextWater');
+          });
+          resGarden = res.body[0];
+          return Garden.findById(resGarden.id);
+        })
+        .then(function(garden) {
+          expect(resGarden.id).to.equal(garden.id);
+          expect(resGarden.username).to.equal(garden.username);
+          expect(resGarden.name).to.equal(garden.name);
+          expect(resGarden.waterEvery).to.equal(garden.waterEvery);
+          expect(resGarden.lastWatered).to.equal(garden.lastWatered.toDateString());
+          expect(resGarden.planted).to.equal(garden.planted.toDateString());
+          expect(resGarden.nextWater).to.equal(garden.nextWater.toDateString());
+        });
+    });
+  });
+
+  describe('POST endpoint', function() {
+    it('should add a new record', function() {
+      const newPlant = generateGardenData();
+      return chai.request(app)
+        .post('/api/my-garden/')
+        .set('Authorization', `Bearer ${token}`)
+        .send(newPlant)
+        .then(function(res) {
+          expect(res).to.have.status(201);
+          expect(res).to.be.json;
+          expect(res.body).to.be.a('object');
+          expect(res.body).to.include.keys(
+            'id', 'username', 'name', 'planted', 'waterEvery', 'lastWatered', 'nextWater');
+          return Garden.findById(res.body.id);
+        })
+        .then(function(garden) {
+          expect(garden.id).to.not.be.null;
+          expect(garden.username).to.equal(newPlant.username);
+          expect(garden.name).to.equal(newPlant.name);
+          expect(garden.waterEvery).to.equal(newPlant.waterEvery);
         });
     });
   });
