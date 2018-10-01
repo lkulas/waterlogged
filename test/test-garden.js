@@ -52,9 +52,9 @@ function generateGardenData() {
   let gardenData = {
     username: _username,
     name: faker.random.word(),
-    planted: faker.date.past(),
+    planted: new Date(),
     waterEvery: faker.random.number(),
-    lastWatered: faker.date.past(),
+    lastWatered: new Date(),
   };
   gardenData.nextWater = nextWater(gardenData);
   return gardenData;
@@ -126,6 +126,30 @@ describe('Garden API resource', function () {
           expect(resGarden.lastWatered).to.equal(garden.lastWatered.toDateString());
           expect(resGarden.planted).to.equal(garden.planted.toDateString());
           expect(resGarden.nextWater).to.equal(garden.nextWater.toDateString());
+        });
+    });
+  });
+
+  describe('POST endpoint', function() {
+    it('should add a new record', function() {
+      const newPlant = generateGardenData();
+      return chai.request(app)
+        .post('/api/my-garden/')
+        .set('Authorization', `Bearer ${token}`)
+        .send(newPlant)
+        .then(function(res) {
+          expect(res).to.have.status(201);
+          expect(res).to.be.json;
+          expect(res.body).to.be.a('object');
+          expect(res.body).to.include.keys(
+            'id', 'username', 'name', 'planted', 'waterEvery', 'lastWatered', 'nextWater');
+          return Garden.findById(res.body.id);
+        })
+        .then(function(garden) {
+          expect(garden.id).to.not.be.null;
+          expect(garden.username).to.equal(newPlant.username);
+          expect(garden.name).to.equal(newPlant.name);
+          expect(garden.waterEvery).to.equal(newPlant.waterEvery);
         });
     });
   });
