@@ -9,26 +9,38 @@
 	<link href="main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<a href="my-garden.html">
-		<h1>Water Tracker</h1>
-	</a>
-	<div id="logout">
-		<button type="button">Logout</button>
-	</div>
-	<div id="tasks">
-		<h2>Tasks</h2>
-		<div id="tasks-list">
+	<div class="row">
+		<div class="col-4">&nbsp;</div>
+		<div class="col-4">
+			<a href="my-garden.html">
+				<h1>Water Tracker</h1>
+			</a>
+		</div>
+		<div id="logout" class="col-4">
+			<button type="button">Logout</button>
 		</div>
 	</div>
-	<div id="my-garden">
-		<h2>My Plants</h2>
+	<div id="tasks" class="row">
+		<div class="col-12">
+			<h2>Tasks</h2>
+			<div id="tasks-list">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<h2>My Plants</h2>
+		</div>
+	</div>
+	<div class="row">
 		<div id="plant-list">
 		</div>
-		<div id="add-plant">
+	</div>
+	<div class="row">
+		<div id="add-plant" class="col-12">
 			<form id ="add-plant-form" hidden>
-				<label>Name
-					<input type="text" id="plant-name" placeholder="Tomatoes">
-				</label>
+				<label>Name</label>
+				<input type="text" id="plant-name" placeholder="Tomatoes">
 				<label>Water every <input type="number" id="water-every"> days
 				</label>
 				<button type="submit">Submit</button>

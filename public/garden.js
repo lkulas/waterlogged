@@ -48,7 +48,7 @@ function postData(plantInfo) {
 };
 
 function watchPlantDetailsClick() {
-    $('#my-garden').on('click', 'h3', event => {
+    $('#plant-list').on('click', 'h3', event => {
         const plant = event.target.textContent;
         $(`.${plant}`).toggle();
     });
@@ -61,15 +61,18 @@ function displayGarden(data) {
     console.log(data);
     if (data.length === 0) {
         $('#plant-list').html(
-            `<p>There are no plants in your garden!</p>`
+            `<div class="col-12">
+                <p>There are no plants in your garden!</p>
+            </div>`
             )
     } else {
         for (let i = 0; i < data.length; i++) {
             $('#plant-list').append(
-            `<h3>${data[i].name}</h3>
+            `<div class="col-4">
+                <h3>${data[i].name}</h3>
             <div class="${data[i].name}" id="${data[i].id}" hidden>
                 <ul>
-                    <li class="waterOn">Last watered on: 
+                    <li class="waterOn">Last watered on:<br> 
                         <span class="editable">${data[i].lastWatered}</span> 
                         <button type="button" class="edit-button">Edit</button>
                         <form class="wateredOn-edit" hidden>
@@ -79,20 +82,19 @@ function displayGarden(data) {
                             <button type="submit">Submit</button>
                         </form>
                     </li>
-                    <li class="water">Water every: 
+                    <li class="water">Water every:<br> 
                         <span class="editable">${data[i].waterEvery}</span>
                         days
+                        <button type="button" class="edit-button">Edit</button>
                         <form class="waterEvery-edit" hidden>
                             <input type="number" class="waterEvery-edit-input">
                             <button type="submit">Submit</button>
                         </form>
-                        <button type="button" class="edit-button">Edit</button>
-                    </li>
-                    <li class="nextWater">Water next on: ${data[i].nextWater}
                     </li>
                 </ul>
                 <button type="button" class="delete-button">Delete</button>
-            </div>`);
+            </div>
+        </div>`);
         }
     };
 };
@@ -105,6 +107,7 @@ function watchClickEdit() {
         const formTarget = event.target.closest('li').className;
         $('#plant-list').find(`#${plantTarget}`).find(`.${formTarget}`).children('form').toggle();
         $('#plant-list').find(`#${formTarget}`).find(`.${formTarget}`).children('.edit-button').toggle();
+        $('#plant-list').find(`#${formTarget}`).find(`.${formTarget}`).children('span').toggle();
     });
     watchEditSubmit();
 };
@@ -180,8 +183,8 @@ function displayTasks(data) {
         for (let i = 0; i < tasks.length; i++) {
             $('#tasks-list').append(`
                 <div data="${tasks[i].id}">
-                    <p>${tasks[i].date}: ${tasks[i].task} ${tasks[i].name}</p>
                     <form class="complete-task">
+                        <label>${tasks[i].date}: ${tasks[i].task} ${tasks[i].name}</label>
                         <input type="checkbox" data="${tasks[i].id}">
                     </form>
                 </div>`)
@@ -245,6 +248,7 @@ function refreshPageInfo() {
 function watchAddPlant() {
     $('.add-plant-button').on('click', event => {
         $('#add-plant-form').prop('hidden', false);
+        $('.add-plant-button').prop('hidden', true);
     });
     watchAddPlantSubmit();
 };
@@ -252,6 +256,7 @@ function watchAddPlant() {
 function watchAddPlantSubmit() {
     $('#add-plant-form').on('submit', event => {
         event.preventDefault();
+        $('.add-plant-button').prop('hidden', false);
         const plantInfo = {
             username: localStorage.getItem('username'),
             name: $('#plant-name').val(),

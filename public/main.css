@@ -44,7 +44,8 @@
 	cursor: pointer;
 }
 
-label {
+#login-form label,
+#register-form label {
 	width: 200px;
 	text-align: left;
 	margin-left: -135px;
@@ -56,7 +57,9 @@ button {
 	margin-top: 15px;
 }
 
-input {
+#login-form input,
+#register-form input
+#add-plant-form input {
 	display: block;
 	margin: auto;
 	text-align: left;
@@ -65,7 +68,25 @@ input {
 	width: 200px;
 }
 
+.complete-task input {
+	margin-left: 10px;
+}
+
 a {
 	text-decoration: none;
 	color: black;
 }
+
+li {
+  list-style-type: none;
+  margin-bottom: 10px;
+}
+
+ul {
+	padding-left: 0px;
+}
+
+.edit-button {
+	display: inline;
+}
+
