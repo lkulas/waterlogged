@@ -10,16 +10,15 @@ function loginUser(_username, _password) {
         url: '/api/auth/login',
         data: JSON.stringify(user),
         contentType: 'application/json',
-        method: 'POST',
-        error: jqXHR => {
-            $('#login-error').prop('hidden', false);
-            $('#login-error').html(`<p>Error: ${jqXHR.responseJSON.message}</p>`);
-        }
+        method: 'POST'
     })
     .done(token => {
         localStorage.setItem('authToken', token.authToken);
         localStorage.setItem('username', token.username);
         window.location.href = 'my-garden.html';
+    })
+    .fail(err => {
+        $('#login-error').prop('hidden', false);
     });
 };
 
@@ -29,28 +28,6 @@ function watchLoginSubmit() {
         const username = $('.username').val();
         const password = $('.password').val();
         loginUser(username, password);
-    });
-};
-
-function loginUser(_username, _password) {
-    const user = {
-      username: _username,
-      password: _password
-    };
-    $.ajax({
-        url: '/api/auth/login',
-        data: JSON.stringify(user),
-        contentType: 'application/json',
-        method: 'POST',
-        error: jqXHR => {
-            $('#login-error').prop('hidden', false);
-            $('#login-error').html(`<p>Error: ${jqXHR.responseJSON.message}</p>`);
-        }
-    })
-    .done(token => {
-        localStorage.setItem('authToken', token.authToken);
-        localStorage.setItem('username', user.username);
-        window.location.href = 'my-garden.html';
     });
 };
 
@@ -91,7 +68,7 @@ function registerUser(_username, _password, _firstName, _lastName) {
         method: 'POST',
         error: jqXHR => {
             $('#register-error').prop('hidden', false);
-            $('#register-error').html(`<p>Error: ${jqXHR.responseJSON.message}</p>`);
+            $('#register-error').html(`<p>${jqXHR.responseJSON.message}</p>`);
         }
     })
     .done(() => {

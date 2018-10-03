@@ -1,5 +1,6 @@
 * {
 	box-sizing: border-box;
+	font-family: 'Muli', sans-serif;
 }
 
 .row {
@@ -48,7 +49,7 @@
 #register-form label {
 	width: 200px;
 	text-align: left;
-	margin-left: -135px;
+	margin-left: -125px;
 }
 
 button {
@@ -58,8 +59,7 @@ button {
 }
 
 #login-form input,
-#register-form input
-#add-plant-form input {
+#register-form input {
 	display: block;
 	margin: auto;
 	text-align: left;

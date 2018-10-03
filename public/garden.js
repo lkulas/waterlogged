@@ -92,7 +92,7 @@ function displayGarden(data) {
                         </form>
                     </li>
                 </ul>
-                <button type="button" class="delete-button">Delete</button>
+                <button type="button" class="delete-button">Delete Plant</button>
             </div>
         </div>`);
         }
