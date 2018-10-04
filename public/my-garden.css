@@ -1,13 +1,8 @@
 * {
 	box-sizing: border-box;
 	font-family: 'Muli', sans-serif;
-	background-image: url("https://images.unsplash.com/photo-1479147014836-dda42d84c1a9?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=72522d87a2c226fb0047e7a9d47c4441&auto=format&fit=crop&w=2251&q=80");
+	background: #f9fbfd;
 	text-transform: lowercase;
-	background-attachment: fixed;
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
-	color: #f9fbfd;
 }
 
 .row {
@@ -45,9 +40,6 @@
 	.col-4 {
 		width: 33%;
 	}
-	body {
-		margin-top: 150px;
-	}
 }
 
 .register {
@@ -66,8 +58,8 @@ button {
 	display: block;
 	margin: auto;
 	margin-top: 15px;
-	background: #f9fbfd;
-	color: #14272d;
+	background: #14272d;
+	color: white;
 	padding: 10px;
 	border-radius: 5px;
 	cursor: pointer;
@@ -76,7 +68,6 @@ button {
 
 button:hover {
 	background: #aa7b48;
-	color: #f9fbfd;
 }
 
 #login-form input,
@@ -88,16 +79,27 @@ button:hover {
 	margin-bottom: 3px;
 	width: 200px;
 	background: #14272d;
-	color: white;
+	color: #f0d2c0;
+}
+
+.complete-task input {
+	margin-left: 10px;
+	background: #14272d;
+	color: #f0d2c0;
 }
 
 a {
 	text-decoration: none;
+	color: #3a8799;
 }
 
-h1 {
-	font-family: 'Lobster', cursive;
-	font-size: 54px;
+li {
+  list-style-type: none;
+  margin-bottom: 10px;
+}
+
+ul {
+	padding-left: 0px;
 }
 
 .edit-button {
