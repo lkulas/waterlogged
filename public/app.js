@@ -2,6 +2,7 @@
 'use strict';
 
 function loginUser(_username, _password) {
+    debugger
     const user = {
       username: _username,
       password: _password
@@ -14,7 +15,7 @@ function loginUser(_username, _password) {
     })
     .done(token => {
         localStorage.setItem('authToken', token.authToken);
-        localStorage.setItem('username', token.username);
+        localStorage.setItem('username', _username);
         window.location.href = 'my-garden.html';
     })
     .fail(err => {

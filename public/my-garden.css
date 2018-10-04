@@ -102,7 +102,10 @@ ul {
 	padding-left: 0px;
 }
 
-.edit-button {
+.edit-button,
+.submit-button {
 	display: inline;
+	font-size: 12px;
+	padding: 5px;
 }
 
