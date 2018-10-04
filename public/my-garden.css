@@ -127,14 +127,14 @@ ul {
 }
 
 .overdue {
-	background: #f0d2c0;
+	background: #aa7b48;
 	margin-bottom: 15px;
 	padding: 20px;
 	border-radius: 15px;
 	width: 500px;
 	margin-right: auto;
 	margin-left: auto;
-	border: 2px solid #ff0e11;
+	color: white;
 }
 
 .plant-container {
@@ -156,6 +156,20 @@ ul {
 h1 {
 	font-family: 'Lobster', cursive;
 	font-size: 54px;
+}
+
+.check {
+	color: white;
+	cursor: pointer;
+	font-size: 28px;
+	vertical-align: middle;
+	position: relative;
+	bottom: 3px;
+	margin-left: 10px;
+}
+
+.check:hover {
+	color: #14272d;
 }
 
 h2 {

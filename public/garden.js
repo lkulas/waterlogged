@@ -178,21 +178,15 @@ function displayTasks(data) {
             return new Date(a.date) - new Date(b.date);
         });
         for (let i = 0; i < tasks.length; i++) {
-            if (new Date(tasks[i].date) < new Date()) {
+            if (new Date(tasks[i].date) <= new Date()) {
                 $('#tasks-list').append(`
                 <div data="${tasks[i].id}" class="overdue">
-                    <p>${tasks[i].date} Water ${tasks[i].name}</p>
-                    <form class="complete-task">
-                        <input type="checkbox" data="${tasks[i].id}">
-                    </form>
+                    <p>${tasks[i].date} Water ${tasks[i].name} <span class="check">&#9745;</span></p>
                 </div>`);
             } else {
                 $('#tasks-list').append(`
                 <div data="${tasks[i].id}" class="task-container">
                     <p>${tasks[i].date} Water ${tasks[i].name}</p>
-                    <form class="complete-task">
-                        <input type="checkbox" data="${tasks[i].id}">
-                    </form>
                 </div>`);
             };
         };
@@ -200,8 +194,7 @@ function displayTasks(data) {
 };
 
 function watchClickComplete() {
-    $('#tasks-list').on('click', '.complete-task', 'input', event => {
-        console.log(event.target.closest('div').getAttribute('data'));
+    $('#tasks-list').on('click', '.check', event => {
         const plantId = event.target.closest('div').getAttribute('data');
         const plantInfo = {
             id: plantId,
