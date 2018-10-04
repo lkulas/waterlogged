@@ -5,8 +5,8 @@
 	<meta name="description" content="Track watering schedule of your plants">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width" initial-scale="1">
-	<link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
-  <link href="https://necolas.github.io/normalize.css/8.0.0/normalize.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Lobster|Muli" rel="stylesheet">  
+	<link href="https://necolas.github.io/normalize.css/8.0.0/normalize.css" rel="stylesheet" type="text/css">
 	<link href="my-garden.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -31,26 +31,22 @@
 	<div class="row">
 		<div class="col-12">
 			<h2>My Plants</h2>
+			<div id="add-plant">
+				<button type="button" class="add-plant-button">Add Plant</button>
+				<form id ="add-plant-form" hidden>
+					<label>Name</label>
+					<input type="text" id="plant-name" required>
+					<label>Water every
+					<input type="number" min="1" id="water-every" placeholder="7" required>
+					days</label>
+					<button type="submit">Submit</button>
+				</form>
+				<div id="plant-list">
+				</div>
+				<div id="plant-details" hidden>
+				</div>
+			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div id="plant-list">
-		</div>
-	</div>
-	<div class="row">
-		<div id="add-plant" class="col-12">
-			<form id ="add-plant-form" hidden>
-				<label>Name</label>
-				<input type="text" id="plant-name" placeholder="Tomatoes" required>
-				<label>Water every
-				<input type="number" min="1" id="water-every" placeholder="7" required>
-				days</label>
-				<button type="submit">Submit</button>
-			</form>
-			<button type="button" class="add-plant-button">Add Plant</button>
-		</div>
-	</div>
-	<div id="plant-details" hidden>
 	</div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
