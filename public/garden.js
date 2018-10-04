@@ -62,7 +62,7 @@ function displayGarden(data) {
     if (data.length === 0) {
         $('#plant-list').html(
             `<div class="col-12">
-                <p>There are no plants in your garden!</p>
+                <p>There are no plants in your garden yet.</p>
             </div>`
             )
     } else {
@@ -79,7 +79,7 @@ function displayGarden(data) {
                             <label>Date
                                 <input type="date" class="wateredOn-edit-input">
                             </label>
-                            <button type="submit">Submit</button>
+                            <button type="submit" class="submit-button">Submit</button>
                         </form>
                     </li>
                     <li class="water">Water every:<br> 
@@ -88,7 +88,7 @@ function displayGarden(data) {
                         <button type="button" class="edit-button">Edit</button>
                         <form class="waterEvery-edit" hidden>
                             <input type="number" class="waterEvery-edit-input">
-                            <button type="submit">Submit</button>
+                            <button type="submit" class="submit-button">Submit</button>
                         </form>
                     </li>
                 </ul>
