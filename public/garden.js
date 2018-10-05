@@ -56,7 +56,6 @@ function watchPlantDetailsClick() {
 
 function displayGarden(data) {
     $('#plant-list').html('');
-    console.log(data);
     if (data.length === 0) {
         $('#plant-list').html(
             `<div class="col-12">
@@ -99,8 +98,6 @@ function displayGarden(data) {
 
 function watchClickEdit() {
     $('#plant-list').on('click', '.edit-button', event => {
-        console.log(event.target);
-        console.log(event.target.closest('div').id);
         const plantTarget = event.target.closest('div').id;
         const formTarget = event.target.closest('li').className;
         $('#plant-list').find(`#${plantTarget}`).find(`.${formTarget}`).children('form').toggle();
@@ -113,22 +110,26 @@ function watchClickEdit() {
 function watchEditSubmit() {
     $('#plant-list').on('submit', '.waterEvery-edit', event => {
         event.preventDefault();
+        const plantTarget = event.target.closest('div').id;
+        const formTarget = event.target.closest('li').className;
+        const updateInfo = $('#plant-list').find(`#${plantTarget}`).find(`.${formTarget}`).children('form').children('input').val();
         const plantId = event.target.closest('div').id;
         const plantInfo = {
-            waterEvery: $('.waterEvery-edit-input').val(),
+            waterEvery: updateInfo,
             id: plantId
         };
-        console.log(plantInfo);
         putData(plantId, plantInfo);
     });
     $('#plant-list').on('submit', '.wateredOn-edit', event => {
         event.preventDefault();
+        const plantTarget = event.target.closest('div').id;
+        const formTarget = event.target.closest('li').className;
+        const updateInfo = $('#plant-list').find(`#${plantTarget}`).find(`.${formTarget}`).children('form').children('input').val();
         const plantId = event.target.closest('div').id;
         const plantInfo = {
             id: plantId,
-            lastWatered: $('.wateredOn-edit-input').val(),
+            lastWatered: updateInfo
         };
-        console.log(plantInfo);
         putData(plantId, plantInfo);
     });
 };
