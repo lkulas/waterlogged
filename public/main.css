@@ -5,12 +5,58 @@
 	color: #f9fbfd;
 }
 
+a {
+	text-decoration: none;
+}
+
+button {
+	display: block;
+	margin: auto;
+	margin-top: 15px;
+	background: #f9fbfd;
+	color: #14272d;
+	padding: 10px;
+	border-radius: 5px;
+	cursor: pointer;
+	text-transform: lowercase;
+	font-size: 14px;
+}
+
+button:hover {
+	background: #aa7b48;
+	color: #f9fbfd;
+}
+
 body {
 	background-image: url("https://images.unsplash.com/photo-1479147014836-dda42d84c1a9?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=72522d87a2c226fb0047e7a9d47c4441&auto=format&fit=crop&w=2251&q=80");
 	background-attachment: fixed;
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
+}
+
+h1 {
+	font-family: 'Lobster', cursive;
+	font-size: 54px;
+}
+
+.col-6, 
+.col-4, 
+.col-12 {
+	float: left;
+	padding-left: 1.0416666%;
+	padding-right: 1.0416666%;
+	width: 100%;
+	text-align: center;
+}
+
+.edit-button {
+	display: inline;
+}
+
+.register {
+	text-decoration: underline;
+	cursor: pointer;
 }
 
 .row {
@@ -31,55 +77,11 @@ body {
 	clear: both;
 }
 
-.col-6, 
-.col-4, 
-.col-12 {
-	float: left;
-	padding-left: 1.0416666%;
-	padding-right: 1.0416666%;
-	width: 100%;
-	text-align: center;
-}
-
-@media only screen and (min-width: 640px) {
-	.col-6 {
-		width: 50%;
-	}
-	.col-4 {
-		width: 33%;
-	}
-	body {
-		margin-top: 150px;
-	}
-}
-
-.register {
-	text-decoration: underline;
-	cursor: pointer;
-}
-
 #login-form label,
 #register-form label {
 	width: 200px;
 	text-align: left;
 	margin-left: -125px;
-}
-
-button {
-	display: block;
-	margin: auto;
-	margin-top: 15px;
-	background: #f9fbfd;
-	color: #14272d;
-	padding: 10px;
-	border-radius: 5px;
-	cursor: pointer;
-	text-transform: lowercase;
-}
-
-button:hover {
-	background: #aa7b48;
-	color: #f9fbfd;
 }
 
 #login-form input,
@@ -95,20 +97,19 @@ button:hover {
 	text-transform: none;
 }
 
-a {
-	text-decoration: none;
-}
-
-h1 {
-	font-family: 'Lobster', cursive;
-	font-size: 54px;
-}
-
-.edit-button {
-	display: inline;
-}
-
-#register-error p,
-#login-error p {
+#login-error p,
+#register-error p {
 	color: red;
+}
+
+@media only screen and (min-width: 640px) {
+	.col-6 {
+		width: 50%;
+	}
+	.col-4 {
+		width: 33%;
+	}
+	body {
+		margin-top: 150px;
+	}
 }
