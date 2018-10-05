@@ -1,5 +1,5 @@
-# garden-tracker
-App to digitize garden collection
+# Waterlogged
+App to track watering schedules for your plants.
 
-# Heroku App
+# Live App
 https://sheltered-plateau-93284.herokuapp.com/
