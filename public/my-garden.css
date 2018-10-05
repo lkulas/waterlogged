@@ -55,6 +55,15 @@ ul {
 	margin-bottom: 15px;
 }
 
+#add-plant-form input {
+	display: inline-block;
+	margin-bottom: 5px;
+}
+
+#add-plant-form label {
+	display: inline-block;
+}
+
 .check {
 	color: white;
 	cursor: pointer;
@@ -90,7 +99,8 @@ ul {
 }
 
 .delete-button:hover {
-	background: #378090;
+	background: white;
+	color: #14272d;
 }
 
 .edit-button:hover {
@@ -110,7 +120,6 @@ ul {
 	padding: 20px;
 	border: 2px solid #936A3E;
 	border-radius: 15px;
-	width: 500px;
 	margin-right: auto;
 	margin-left: auto;
 }
@@ -121,10 +130,21 @@ ul {
 }
 
 .plant-container {
-	background: #378090;
-	color: white;
+	background: white;
+	color: #378090;
 	margin-bottom: 15px;
 	padding: 20px;
+	border: 2px solid #378090;
+	border-radius: 15px;
+	margin-right: auto;
+	margin-left: auto;
+	cursor: pointer;
+}
+
+.add-plant-button {
+	margin-bottom: 15px;
+	padding: 20px;
+	width: 100%;
 	border-radius: 15px;
 	margin-right: auto;
 	margin-left: auto;
@@ -132,8 +152,8 @@ ul {
 }
 
 .plant-container:hover {
-	background: #936A3E;
-
+	background: #378090;
+	color: white;
 }
 
 .register {

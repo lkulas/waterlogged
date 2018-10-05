@@ -39,7 +39,7 @@ function displayGarden(data) {
 
 function generatePlantInfo(data) {
     $('#plant-list').append(
-        `<div class="col-4">
+        `<div class="col-6">
             <div class="plant-container" data="${data.id}">
                 <h3 data="${data.id}">${data.name} &#8964;</h3> 
                 <div class="${data.name}" id="${data.id}" hidden>
