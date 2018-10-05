@@ -1,5 +1,5 @@
 # Waterlogged
-A full stack Javascript application that helps users track their plant collection and when each plant needs watering. Supports CRUD operations:
+A full stack Javascript application that helps users track their plant collection and watering schedules. Supports CRUD operations:
 * Create - Add plants to collection
 * Read - View plants and when they are due for watering
 * Update - Record when plants are watered or change watering frequency
