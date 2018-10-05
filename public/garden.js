@@ -1,8 +1,6 @@
 
 'use strict';
 
-const options = { weekday: 'long', month: 'long', day: 'numeric' };
-
 // GET - getting only records for logged in user
 function getData(callback) {
     const token = localStorage.getItem('authToken');
@@ -48,9 +46,9 @@ function postData(plantInfo) {
 };
 
 function watchPlantDetailsClick() {
-    $('#plant-list').on('click', 'h3', event => {
-        const plant = event.target.textContent;
-        $(`.${plant}`).toggle();
+    $('#plant-list').on('click', '.plant-container' || 'h3', event => {
+        const plant = event.target.getAttribute('data');
+        $(`#${plant}`).toggle();
     });
     watchDeletePlant();
     watchClickEdit();
@@ -69,32 +67,32 @@ function displayGarden(data) {
         for (let i = 0; i < data.length; i++) {
             $('#plant-list').append(
             `<div class="col-4">
-                <h3>${data[i].name}</h3>
-            <div class="${data[i].name}" id="${data[i].id}" hidden>
-                <ul>
-                    <li class="waterOn">Last watered on:<br> 
-                        <span class="editable">${data[i].lastWatered}</span> 
-                        <button type="button" class="edit-button">Edit</button>
-                        <form class="wateredOn-edit" hidden>
-                            <label>Date
+                <div class="plant-container" data="${data[i].id}">
+                <h3 data="${data[i].id}">${data[i].name} &#8964;</h3> 
+                <div class="${data[i].name}" id="${data[i].id}" hidden>
+                    <ul>
+                        <li class="waterOn">Last watered on:<br> 
+                            <span class="editable">${data[i].lastWatered}</span> 
+                            <span class="edit-button">&#9998;</span>
+                            <form class="wateredOn-edit" hidden>
                                 <input type="date" class="wateredOn-edit-input">
-                            </label>
-                            <button type="submit" class="submit-button">Submit</button>
-                        </form>
-                    </li>
-                    <li class="water">Water every:<br> 
-                        <span class="editable">${data[i].waterEvery}</span>
-                        days
-                        <button type="button" class="edit-button">Edit</button>
-                        <form class="waterEvery-edit" hidden>
-                            <input type="number" class="waterEvery-edit-input">
-                            <button type="submit" class="submit-button">Submit</button>
-                        </form>
-                    </li>
-                </ul>
-                <button type="button" class="delete-button">Delete Plant</button>
-            </div>
-        </div>`);
+                                <button type="submit" class="submit-button">Submit</button>
+                            </form>
+                        </li>
+                        <li class="water">Water every:<br> 
+                            <span class="editable">${data[i].waterEvery}</span>
+                            days
+                            <span class="edit-button">&#9998;</span>
+                            <form class="waterEvery-edit" hidden>
+                                <input type="number" class="waterEvery-edit-input">
+                                <button type="submit" class="submit-button">Submit</button>
+                            </form>
+                        </li>
+                    </ul>
+                    <button type="button" class="delete-button">Delete Plant</button>
+                </div>
+                </div>
+            </div>`);
         }
     };
 };
@@ -173,7 +171,6 @@ function displayTasks(data) {
             {
                 date: data[i].nextWater,
                 name: data[i].name,
-                task: 'Water',
                 id: data[i].id
             });
         };
@@ -181,20 +178,23 @@ function displayTasks(data) {
             return new Date(a.date) - new Date(b.date);
         });
         for (let i = 0; i < tasks.length; i++) {
-            $('#tasks-list').append(`
-                <div data="${tasks[i].id}">
-                    <form class="complete-task">
-                        <label>${tasks[i].date}: ${tasks[i].task} ${tasks[i].name}</label>
-                        <input type="checkbox" data="${tasks[i].id}">
-                    </form>
-                </div>`)
+            if (new Date(tasks[i].date) <= new Date()) {
+                $('#tasks-list').append(`
+                <div data="${tasks[i].id}" class="overdue">
+                    <p>${tasks[i].date} Water ${tasks[i].name} <span class="check">&#9745;</span></p>
+                </div>`);
+            } else {
+                $('#tasks-list').append(`
+                <div data="${tasks[i].id}" class="task-container">
+                    <p>${tasks[i].date} Water ${tasks[i].name}</p>
+                </div>`);
+            };
         };
     };
 };
 
 function watchClickComplete() {
-    $('#tasks-list').on('click', '.complete-task', 'input', event => {
-        console.log(event.target.closest('div').getAttribute('data'));
+    $('#tasks-list').on('click', '.check', event => {
         const plantId = event.target.closest('div').getAttribute('data');
         const plantInfo = {
             id: plantId,

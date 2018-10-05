@@ -2,7 +2,6 @@
 'use strict';
 
 function loginUser(_username, _password) {
-    debugger
     const user = {
       username: _username,
       password: _password

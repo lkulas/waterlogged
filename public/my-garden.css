@@ -1,8 +1,11 @@
 * {
 	box-sizing: border-box;
 	font-family: 'Muli', sans-serif;
-	background: #f9fbfd;
 	text-transform: lowercase;
+}
+
+body {
+	background: #f9fbfd;
 }
 
 .row {
@@ -70,22 +73,19 @@ button:hover {
 	background: #aa7b48;
 }
 
-#login-form input,
-#register-form input {
-	display: block;
-	margin: auto;
-	text-align: left;
-	margin-top: 15px;
-	margin-bottom: 3px;
-	width: 200px;
-	background: #14272d;
-	color: #f0d2c0;
-}
-
 .complete-task input {
 	margin-left: 10px;
 	background: #14272d;
 	color: #f0d2c0;
+}
+
+.complete-task {
+	display: inline;
+}
+
+.task-container p,
+.overdue p {
+	display: inline;
 }
 
 a {
@@ -101,11 +101,89 @@ li {
 ul {
 	padding-left: 0px;
 }
-
-.edit-button,
 .submit-button {
 	display: inline;
 	font-size: 12px;
 	padding: 5px;
 }
 
+.edit-button:hover {
+	color: #14272d;
+}
+
+.delete-button:hover {
+	background: #3a8799;
+}
+
+.task-container {
+	background: #f0d2c0;
+	margin-bottom: 15px;
+	padding: 20px;
+	border: 2px solid #aa7b48;
+	border-radius: 15px;
+	width: 500px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.overdue {
+	background: #aa7b48;
+	margin-bottom: 15px;
+	padding: 20px;
+	border-radius: 15px;
+	width: 500px;
+	margin-right: auto;
+	margin-left: auto;
+	color: white;
+}
+
+.plant-container {
+	background: #3a8799;
+	color: white;
+	margin-bottom: 15px;
+	padding: 20px;
+	border-radius: 15px;
+	margin-right: auto;
+	margin-left: auto;
+	cursor: pointer;
+}
+
+.plant-container:hover {
+	background: #aa7b48;
+
+}
+
+h1 {
+	font-family: 'Lobster', cursive;
+	font-size: 54px;
+}
+
+.check {
+	color: white;
+	cursor: pointer;
+	font-size: 28px;
+	vertical-align: middle;
+	position: relative;
+	bottom: 3px;
+	margin-left: 10px;
+}
+
+.check:hover {
+	color: #14272d;
+}
+
+h2 {
+	letter-spacing: 3px;
+	text-transform: uppercase;
+	color: #14272d;
+}
+
+#logout button {
+	margin-right: 0;
+	margin-top: 45px;
+}
+
+.add-plant-button,
+#add-plant-form button {
+	margin-bottom: 15px;
+}
