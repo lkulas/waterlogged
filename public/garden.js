@@ -74,7 +74,7 @@ function displayGarden(data) {
                             <span class="editable">${data[i].lastWatered}</span> 
                             <span class="edit-button">&#9998;</span>
                             <form class="wateredOn-edit" hidden>
-                                <input type="date" class="wateredOn-edit-input">
+                                <input type="date" aria-label="date" class="wateredOn-edit-input">
                                 <button type="submit" class="submit-button">Submit</button>
                             </form>
                         </li>
@@ -83,7 +83,7 @@ function displayGarden(data) {
                             days
                             <span class="edit-button">&#9998;</span>
                             <form class="waterEvery-edit" hidden>
-                                <input type="number" class="waterEvery-edit-input">
+                                <input type="number" aria-label="number of days" class="waterEvery-edit-input">
                                 <button type="submit" class="submit-button">Submit</button>
                             </form>
                         </li>

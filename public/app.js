@@ -25,8 +25,8 @@ function loginUser(_username, _password) {
 function watchLoginSubmit() {
     $('#login-form').on('submit', event => {
         event.preventDefault();
-        const username = $('.username').val();
-        const password = $('.password').val();
+        const username = $('#username').val();
+        const password = $('#password').val();
         loginUser(username, password);
     });
 };

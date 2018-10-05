@@ -11,52 +11,56 @@
 </head>
 <body>
 	<div class="row">
-		<div class="col-6">
-			<a href="index.html">
-				<h1>Waterlogged</h1>
-			</a>
-			<p>add your plant collection.<br><br>
-				easily see when each plant needs to be watered.<br><br>
-				keep your plants happy.
-			</p>
-		</div>
-		<div class="col-6">
-			<div id="register-success" hidden>
-				<p>User successfully registered.</p>
-			</div>
-			<div id="register-error" hidden>
-			</div>
-			<div id="login-error" hidden>
-				<p>Incorrect username or password</p>
-			</div>
-		</div>
-		<div id="login">
+		<header>
 			<div class="col-6">
-				<p>Login with username and password 'demo' for the demo version of the app.</p>
-				<form id="login-form">
-					<input type="text" class="username" required>
-					<label>Username</label>
-					<input type="password" class="password" required>
-					<label>Password</label>
-					<button type="submit">Login</button>
+				<a href="index.html">
+					<h1>Waterlogged</h1>
+				</a>
+				<p>add your plant collection.<br><br>
+					easily see when each plant needs to be watered.<br><br>
+					keep your plants happy.
+				</p>
+			</div>
+		</header>
+		<main>
+			<div class="col-6">
+				<div id="register-success" hidden>
+					<p>User successfully registered.</p>
+				</div>
+				<div id="register-error" hidden>
+				</div>
+				<div id="login-error" hidden>
+					<p>Incorrect username or password</p>
+				</div>
+			</div>
+			<div id="login">
+				<div class="col-6">
+					<p>Login with username and password 'demo' for the demo version of the app.</p>
+					<form id="login-form">
+						<input type="text" id="username" required>
+						<label for="username">Username</label>
+						<input type="password" id="password" required>
+						<label for="password">Password</label>
+						<button type="submit">Login</button>
+					</form>
+					<p>New user? <span class="register">Register now</span></p>
+				</div> 
+			</div>
+			<div id="register" class="col-6" hidden>
+				<h2>Register</h2>
+				<form id="register-form">
+					<input type="text" id="register-firstName" required>
+					<label for="register-firstName">First name</label>
+					<input type="text" id="register-lastName" required>
+					<label for="register-lastName">Last name</label>
+					<input type="text" id="register-username" required>
+					<label for="register-username">Username</label>
+					<input type="password" id="register-password" required>
+					<label for="register-password">Password</label>
+					<button type="submit">Submit</button>
 				</form>
-				<p>New user? <span class="register">Register now</span></p>
-			</div> 
-		</div>
-		<div id="register" class="col-6" hidden>
-			<h2>Register</h2>
-			<form id="register-form">
-				<input type="text" class="register-firstName" required>
-				<label>First name</label>
-				<input type="text" class="register-lastName" required>
-				<label>Last name</label>
-				<input type="text" class="register-username" required>
-				<label>Username</label>
-				<input type="password" class="register-password" required>
-				<label>Password</label>
-				<button type="submit">Submit</button>
-			</form>
-		</div>
+			</div>
+		</main>
 	</div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
