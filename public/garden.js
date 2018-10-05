@@ -24,6 +24,7 @@ function getData(callback) {
 
 function displayGarden(data) {
     $('#plant-list').html('');
+    //check for empty data
     if (data.length === 0) {
         $('#plant-list').html(
             `<div class="col-12">
@@ -75,6 +76,7 @@ function getAndDisplayGarden() {
 function displayTasks(data) {
     $('#tasks-list').html('');
     const tasks = [];
+    //check for empty data
     if (data.length === 0) {
         $('#tasks-list').html(
             `<p>No upcoming tasks</p>`
@@ -88,10 +90,12 @@ function displayTasks(data) {
                 id: data[i].id
             });
         };
+        //sort array by date
         tasks.sort(function(a, b) {
             return new Date(a.date) - new Date(b.date);
         });
         for (let i = 0; i < tasks.length; i++) {
+            //if task is overdue
             if (new Date(tasks[i].date) <= new Date()) {
                 $('#tasks-list').append(`
                 <div data="${tasks[i].id}" class="overdue">
@@ -135,6 +139,7 @@ function watchEditSubmit() {
         event.preventDefault();
         const plantId = event.target.closest('div').id;
         const formTarget = event.target.closest('li').className;
+        //find input value for form relating to specific plant
         const updateInfo = $('#plant-list').find(`#${plantId}`).find(`.${formTarget}`).children('form').children('input').val();
         const plantInfo = {
             waterEvery: updateInfo,
@@ -146,6 +151,7 @@ function watchEditSubmit() {
         event.preventDefault();
         const plantId = event.target.closest('div').id;
         const formTarget = event.target.closest('li').className;
+        //find input value for form relating to specific plant
         const updateInfo = $('#plant-list').find(`#${plantId}`).find(`.${formTarget}`).children('form').children('input').val();
         const plantInfo = {
             id: plantId,
