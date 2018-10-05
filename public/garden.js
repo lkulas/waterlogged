@@ -1,57 +1,25 @@
 
 'use strict';
 
+const token = localStorage.getItem('authToken');
+const username = localStorage.getItem('username');
+
 // GET - getting only records for logged in user
 function getData(callback) {
-    const token = localStorage.getItem('authToken');
-    const username = localStorage.getItem('username');
-    const userInfo = {
-        user: username
-    };
     $.ajax({
         url: '/api/my-garden/' + username,
         contentType: 'application/json',
         method: 'GET',
         headers: {
             'Authorization': 'Bearer ' + token
-        },
-        error: jqXHR => {
-            alert(jqXHR.responseJSON.message);
         }
     })
     .done(results => {
         callback(results);
-    });
-};
-
-// POST
-function postData(plantInfo) {
-    const token = localStorage.getItem('authToken');
-    $.ajax({
-        url: '/api/my-garden',
-        contentType: 'application/json',
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + token
-        },
-        data: JSON.stringify(plantInfo),
-        dataType: 'json',
-        error: jqXHR => {
-            alert(jqXHR.responseJSON);
-        }
     })
-    .done(() => {
-        refreshPageInfo();
+    .fail(err => {
+        console.error(`Error: ${err.message}`);
     });
-};
-
-function watchPlantDetailsClick() {
-    $('#plant-list').on('click', '.plant-container' || 'h3', event => {
-        const plant = event.target.getAttribute('data');
-        $(`#${plant}`).toggle();
-    });
-    watchDeletePlant();
-    watchClickEdit();
 };
 
 function displayGarden(data) {
@@ -64,14 +32,20 @@ function displayGarden(data) {
             )
     } else {
         for (let i = 0; i < data.length; i++) {
-            $('#plant-list').append(
-            `<div class="col-4">
-                <div class="plant-container" data="${data[i].id}">
-                <h3 data="${data[i].id}">${data[i].name} &#8964;</h3> 
-                <div class="${data[i].name}" id="${data[i].id}" hidden>
+            generatePlantInfo(data[i]);
+        };
+    };
+};
+
+function generatePlantInfo(data) {
+    $('#plant-list').append(
+        `<div class="col-4">
+            <div class="plant-container" data="${data.id}">
+                <h3 data="${data.id}">${data.name} &#8964;</h3> 
+                <div class="${data.name}" id="${data.id}" hidden>
                     <ul>
                         <li class="waterOn">Last watered on:<br> 
-                            <span class="editable">${data[i].lastWatered}</span> 
+                            <span class="editable">${data.lastWatered}</span> 
                             <span class="edit-button">&#9998;</span>
                             <form class="wateredOn-edit" hidden>
                                 <input type="date" aria-label="date" class="wateredOn-edit-input">
@@ -79,7 +53,7 @@ function displayGarden(data) {
                             </form>
                         </li>
                         <li class="water">Water every:<br> 
-                            <span class="editable">${data[i].waterEvery}</span>
+                            <span class="editable">${data.waterEvery}</span>
                             days
                             <span class="edit-button">&#9998;</span>
                             <form class="waterEvery-edit" hidden>
@@ -90,69 +64,8 @@ function displayGarden(data) {
                     </ul>
                     <button type="button" class="delete-button">Delete Plant</button>
                 </div>
-                </div>
-            </div>`);
-        }
-    };
-};
-
-function watchClickEdit() {
-    $('#plant-list').on('click', '.edit-button', event => {
-        const plantTarget = event.target.closest('div').id;
-        const formTarget = event.target.closest('li').className;
-        $('#plant-list').find(`#${plantTarget}`).find(`.${formTarget}`).children('form').toggle();
-        $('#plant-list').find(`#${formTarget}`).find(`.${formTarget}`).children('.edit-button').toggle();
-        $('#plant-list').find(`#${formTarget}`).find(`.${formTarget}`).children('span').toggle();
-    });
-    watchEditSubmit();
-};
-
-function watchEditSubmit() {
-    $('#plant-list').on('submit', '.waterEvery-edit', event => {
-        event.preventDefault();
-        const plantTarget = event.target.closest('div').id;
-        const formTarget = event.target.closest('li').className;
-        const updateInfo = $('#plant-list').find(`#${plantTarget}`).find(`.${formTarget}`).children('form').children('input').val();
-        const plantId = event.target.closest('div').id;
-        const plantInfo = {
-            waterEvery: updateInfo,
-            id: plantId
-        };
-        putData(plantId, plantInfo);
-    });
-    $('#plant-list').on('submit', '.wateredOn-edit', event => {
-        event.preventDefault();
-        const plantTarget = event.target.closest('div').id;
-        const formTarget = event.target.closest('li').className;
-        const updateInfo = $('#plant-list').find(`#${plantTarget}`).find(`.${formTarget}`).children('form').children('input').val();
-        const plantId = event.target.closest('div').id;
-        const plantInfo = {
-            id: plantId,
-            lastWatered: updateInfo
-        };
-        putData(plantId, plantInfo);
-    });
-};
-
-// PUT
-function putData(_id, plantInfo) {
-    const token = localStorage.getItem('authToken');
-    $.ajax({
-        url: `/api/my-garden/${_id}`,
-        contentType: 'application/json',
-        headers: {
-            'Authorization': 'Bearer ' + token
-        },
-        method: 'PUT',
-        data: JSON.stringify(plantInfo),
-        dataType: 'json',
-        error: jqXHR => {
-            alert(jqXHR.responseJSON);
-        }
-    })
-    .done(() => {
-        refreshPageInfo();
-    });
+            </div>
+        </div>`);
 };
 
 function getAndDisplayGarden() {
@@ -194,6 +107,54 @@ function displayTasks(data) {
     };
 };
 
+function getAndDisplayTasks() {
+    getData(displayTasks);
+};
+
+function watchPlantDetailsClick() {
+    $('#plant-list').on('click', '.plant-container' || 'h3', event => {
+        const plant = event.target.getAttribute('data');
+        $(`#${plant}`).toggle();
+    });
+    watchDeletePlant();
+    watchClickEdit();
+};
+
+function watchClickEdit() {
+    $('#plant-list').on('click', '.edit-button', event => {
+        const plantId = event.target.closest('div').id;
+        const formTarget = event.target.closest('li').className;
+        const target = $('#plant-list').find(`#${plantId}`).find(`.${formTarget}`);
+        target.children('form', '.edit-button', 'span').toggle();
+    });
+    watchEditSubmit();
+};
+
+function watchEditSubmit() {
+    $('#plant-list').on('submit', '.waterEvery-edit', event => {
+        event.preventDefault();
+        const plantId = event.target.closest('div').id;
+        const formTarget = event.target.closest('li').className;
+        const updateInfo = $('#plant-list').find(`#${plantId}`).find(`.${formTarget}`).children('form').children('input').val();
+        const plantInfo = {
+            waterEvery: updateInfo,
+            id: plantId
+        };
+        putData(plantId, plantInfo);
+    });
+    $('#plant-list').on('submit', '.wateredOn-edit', event => {
+        event.preventDefault();
+        const plantId = event.target.closest('div').id;
+        const formTarget = event.target.closest('li').className;
+        const updateInfo = $('#plant-list').find(`#${plantId}`).find(`.${formTarget}`).children('form').children('input').val();
+        const plantInfo = {
+            id: plantId,
+            lastWatered: updateInfo
+        };
+        putData(plantId, plantInfo);
+    });
+};
+
 function watchClickComplete() {
     $('#tasks-list').on('click', '.check', event => {
         const plantId = event.target.closest('div').getAttribute('data');
@@ -206,44 +167,24 @@ function watchClickComplete() {
     });
 };
 
-function getAndDisplayTasks() {
-    getData(displayTasks);
-};
-
-function watchLogout() {
-    $('#logout').on('click', 'button', event => {
-        window.location.href = 'index.html';
-    });
-};
-
-function watchDeletePlant() {
-    $('#plant-list').on('click', '.delete-button', event => {
-        const target = event.target.closest('div').id;
-        deletePlant(target);
-    });
-};
-
-function deletePlant(_id) {
-    const token = localStorage.getItem('authToken');
+// PUT
+function putData(_id, plantInfo) {
     $.ajax({
-        url: '/api/my-garden/' + _id,
+        url: `/api/my-garden/${_id}`,
         contentType: 'application/json',
-        method: 'DELETE',
         headers: {
             'Authorization': 'Bearer ' + token
         },
-        error: jqXHR => {
-            alert(jqXHR.responseJSON.message);
-        }
+        method: 'PUT',
+        data: JSON.stringify(plantInfo),
+        dataType: 'json'
     })
     .done(() => {
         refreshPageInfo();
     })
-};
-
-function refreshPageInfo() {
-    getAndDisplayGarden();
-    getAndDisplayTasks();
+    .fail(err => {
+        console.error(`Error: ${err.message}`);
+    });
 };
 
 function watchAddPlant() {
@@ -259,7 +200,7 @@ function watchAddPlantSubmit() {
         event.preventDefault();
         $('.add-plant-button').prop('hidden', false);
         const plantInfo = {
-            username: localStorage.getItem('username'),
+            username: username,
             name: $('#plant-name').val(),
             waterEvery: $('#water-every').val(),
             planted: new Date(),
@@ -270,11 +211,66 @@ function watchAddPlantSubmit() {
         $('#add-plant-form').prop('hidden', true);
         postData(plantInfo);
     });
-}
+};
 
-$(function() {
+// POST
+function postData(plantInfo) {
+    $.ajax({
+        url: '/api/my-garden',
+        contentType: 'application/json',
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        data: JSON.stringify(plantInfo),
+        dataType: 'json'
+    })
+    .done(() => {
+        refreshPageInfo();
+    })
+    .fail(err => {
+        console.error(`Error: ${err.message}`);
+    });
+};
+
+function watchDeletePlant() {
+    $('#plant-list').on('click', '.delete-button', event => {
+        const target = event.target.closest('div').id;
+        deletePlant(target);
+    });
+};
+
+// DELETE
+function deletePlant(_id) {
+    $.ajax({
+        url: '/api/my-garden/' + _id,
+        contentType: 'application/json',
+        method: 'DELETE',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    })
+    .done(() => {
+        refreshPageInfo();
+    })
+    .fail(err => {
+        console.error(`Error: ${err.message}`);
+    });
+};
+
+function refreshPageInfo() {
     getAndDisplayGarden();
     getAndDisplayTasks();
+};
+
+function watchLogout() {
+    $('#logout').on('click', 'button', event => {
+        window.location.href = 'index.html';
+    });
+};
+
+$(function() {
+    refreshPageInfo();
     watchPlantDetailsClick();
     watchLogout();
     watchAddPlant();

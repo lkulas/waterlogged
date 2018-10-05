@@ -46,10 +46,10 @@ function watchRegisterClick() {
 function watchRegisterSubmit() {
     $('#register-form').on('submit', event => {
         event.preventDefault();
-        const username = $('.register-username').val();
-        const password = $('.register-password').val();
-        const firstName = $('.register-firstName').val();
-        const lastName = $('.register-lastName').val();
+        const username = $('#register-username').val();
+        const password = $('#register-password').val();
+        const firstName = $('#register-firstName').val();
+        const lastName = $('#register-lastName').val();
         registerUser(username, password, firstName, lastName);  
     });
 };
@@ -65,17 +65,17 @@ function registerUser(_username, _password, _firstName, _lastName) {
         url: '/api/users',
         data: JSON.stringify(user),
         contentType: 'application/json',
-        method: 'POST',
-        error: jqXHR => {
-            $('#register-error').prop('hidden', false);
-            $('#register-error').html(`<p>${jqXHR.responseJSON.message}</p>`);
-        }
+        method: 'POST'
     })
     .done(() => {
         $('#register-success').prop('hidden', false);
         $('#register-error').prop('hidden', true);
         $('#login').prop('hidden', false);
         $('#register').prop('hidden', true);
+    })
+    .fail(err => {
+        $('#register-error').prop('hidden', false);
+        $('#register-error').html(`<p>${err.responseJSON.message}</p>`);
     });
 };
 
