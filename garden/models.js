@@ -46,11 +46,11 @@ function addDays(date, days) {
   const result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
-};
+}
 
 function nextWater(data) {
     return addDays(data.lastWatered, data.waterEvery);
-};
+}
 
 const Garden = mongoose.model('Garden', GardenSchema);
 

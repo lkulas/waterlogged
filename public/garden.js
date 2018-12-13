@@ -1,4 +1,3 @@
-
 'use strict';
 
 const token = localStorage.getItem('authToken');
@@ -20,7 +19,7 @@ function getData(callback) {
     .fail(err => {
         console.error(`Error: ${err.message}`);
     });
-};
+}
 
 function displayGarden(data) {
     $('#plant-list').html('');
@@ -30,13 +29,13 @@ function displayGarden(data) {
             `<div class="col-12">
                 <p>There are no plants in your garden yet.</p>
             </div>`
-            )
+            );
     } else {
         for (let i = 0; i < data.length; i++) {
             generatePlantInfo(data[i]);
-        };
-    };
-};
+        }
+    }
+}
 
 function generatePlantInfo(data) {
     $('#plant-list').append(
@@ -67,11 +66,11 @@ function generatePlantInfo(data) {
                 </div>
             </div>
         </div>`);
-};
+}
 
 function getAndDisplayGarden() {
     getData(displayGarden);
-};
+}
 
 function displayTasks(data) {
     $('#tasks-list').html('');
@@ -80,7 +79,7 @@ function displayTasks(data) {
     if (data.length === 0) {
         $('#tasks-list').html(
             `<p>No upcoming tasks</p>`
-            )
+            );
     } else {
         for (let i = 0; i < data.length; i++) {
             tasks.push(
@@ -89,7 +88,7 @@ function displayTasks(data) {
                 name: data[i].name,
                 id: data[i].id
             });
-        };
+        }
         //sort array by date
         tasks.sort(function(a, b) {
             return new Date(a.date) - new Date(b.date);
@@ -106,14 +105,14 @@ function displayTasks(data) {
                 <div data="${tasks[i].id}" class="task-container">
                     <p>${tasks[i].date} Water ${tasks[i].name}</p>
                 </div>`);
-            };
-        };
-    };
-};
+            }
+        }
+    }
+}
 
 function getAndDisplayTasks() {
     getData(displayTasks);
-};
+}
 
 function watchPlantDetailsClick() {
     $('#plant-list').on('click', '.plant-container' || 'h3', event => {
@@ -122,7 +121,7 @@ function watchPlantDetailsClick() {
     });
     watchDeletePlant();
     watchClickEdit();
-};
+}
 
 function watchClickEdit() {
     $('#plant-list').on('click', '.edit-button', event => {
@@ -132,7 +131,7 @@ function watchClickEdit() {
         target.children('form', '.edit-button', 'span').toggle();
     });
     watchEditSubmit();
-};
+}
 
 function watchEditSubmit() {
     $('#plant-list').on('submit', '.waterEvery-edit', event => {
@@ -159,7 +158,7 @@ function watchEditSubmit() {
         };
         putData(plantId, plantInfo);
     });
-};
+}
 
 function watchClickComplete() {
     $('#tasks-list').on('click', '.check', event => {
@@ -167,11 +166,11 @@ function watchClickComplete() {
         const plantInfo = {
             id: plantId,
             lastWatered: new Date()
-        }
+        };
         putData(plantId, plantInfo);
         refreshPageInfo();
     });
-};
+}
 
 // PUT
 function putData(_id, plantInfo) {
@@ -191,7 +190,7 @@ function putData(_id, plantInfo) {
     .fail(err => {
         console.error(`Error: ${err.message}`);
     });
-};
+}
 
 function watchAddPlant() {
     $('.add-plant-button').on('click', event => {
@@ -199,7 +198,7 @@ function watchAddPlant() {
         $('.add-plant-button').prop('hidden', true);
     });
     watchAddPlantSubmit();
-};
+}
 
 function watchAddPlantSubmit() {
     $('#add-plant-form').on('submit', event => {
@@ -217,7 +216,7 @@ function watchAddPlantSubmit() {
         $('#add-plant-form').prop('hidden', true);
         postData(plantInfo);
     });
-};
+}
 
 // POST
 function postData(plantInfo) {
@@ -237,14 +236,14 @@ function postData(plantInfo) {
     .fail(err => {
         console.error(`Error: ${err.message}`);
     });
-};
+}
 
 function watchDeletePlant() {
     $('#plant-list').on('click', '.delete-button', event => {
         const target = event.target.closest('div').id;
         deletePlant(target);
     });
-};
+}
 
 // DELETE
 function deletePlant(_id) {
@@ -262,18 +261,18 @@ function deletePlant(_id) {
     .fail(err => {
         console.error(`Error: ${err.message}`);
     });
-};
+}
 
 function refreshPageInfo() {
     getAndDisplayGarden();
     getAndDisplayTasks();
-};
+}
 
 function watchLogout() {
     $('#logout').on('click', 'button', event => {
         window.location.href = 'index.html';
     });
-};
+}
 
 $(function() {
     refreshPageInfo();

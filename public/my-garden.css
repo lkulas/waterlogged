@@ -6,8 +6,8 @@
 }
 
 a {
-	text-decoration: none;
 	color: #24201C;
+	text-decoration: none;
 }
 
 body {
@@ -15,16 +15,16 @@ body {
 }
 
 button {
+	background: #568B8A;
+	border-radius: 5px;
+	color: white;
+	cursor: pointer;
 	display: block;
+	font-size: 14px;
 	margin: auto;
 	margin-top: 15px;
-	background: #568B8A;
-	color: white;
 	padding: 10px;
-	border-radius: 5px;
-	cursor: pointer;
 	text-transform: lowercase;
-	font-size: 14px;
 }
 
 button:hover {
@@ -37,9 +37,9 @@ h1 {
 }
 
 h2 {
+	color: #24201C;
 	letter-spacing: 3px;
 	text-transform: uppercase;
-	color: #24201C;
 }
 
 li {
@@ -48,31 +48,30 @@ li {
 }
 
 ul {
-	padding-left: 0px;
+	padding-left: 0;
 }
 
-.add-plant-button,
-#add-plant-form button {
+.add-plant-button {
 	margin-bottom: 15px;
 }
 
-#add-plant-form input {
+input {
 	display: inline-block;
 	margin-bottom: 5px;
 }
 
-#add-plant-form label {
+label {
 	display: inline-block;
 }
 
 .check {
+	bottom: 3px;
 	color: white;
 	cursor: pointer;
 	font-size: 28px;
-	vertical-align: middle;
-	position: relative;
-	bottom: 3px;
 	margin-left: 10px;
+	position: relative;
+	vertical-align: middle;
 }
 
 .check:hover {
@@ -85,8 +84,8 @@ ul {
 	float: left;
 	padding-left: 1.0416666%;
 	padding-right: 1.0416666%;
-	width: 100%;
 	text-align: center;
+	width: 100%;
 }
 
 .complete-task {
@@ -94,9 +93,9 @@ ul {
 }
 
 .complete-task input {
-	margin-left: 10px;
 	background: #568B8A;
 	color: #3E744F;
+	margin-left: 10px;
 }
 
 .delete-button:hover {
@@ -115,12 +114,12 @@ ul {
 .overdue,
 .task-container {
 	background: #3E744F;
-	margin-bottom: 15px;
-	padding: 20px;
 	border-radius: 15px;
-	margin-right: auto;
-	margin-left: auto;
 	color: white;
+	margin-bottom: 15px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 20px;
 }
 
 .overdue p,
@@ -130,24 +129,24 @@ ul {
 
 .plant-container {
 	background: white;
-	color: #568B8A;
-	margin-bottom: 15px;
-	padding: 20px;
 	border: 2px solid #568B8A;
 	border-radius: 15px;
-	margin-right: auto;
-	margin-left: auto;
+	color: #568B8A;
 	cursor: pointer;
+	margin-bottom: 15px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 20px;
 }
 
 .add-plant-button {
-	margin-bottom: 15px;
-	padding: 20px;
-	width: 100%;
 	border-radius: 15px;
-	margin-right: auto;
-	margin-left: auto;
 	cursor: pointer;
+	margin-bottom: 15px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 20px;
+	width: 100%;	
 }
 
 .plant-container:hover {
@@ -156,22 +155,22 @@ ul {
 }
 
 .register {
-	text-decoration: underline;
 	cursor: pointer;
+	text-decoration: underline;
 }
 
 .row {
+	margin: 0 auto;
+  margin-bottom: 20px;
   max-width: 1000px;
   padding-left: 20px;
   padding-right: 20px;
-  margin: 0 auto;
-  margin-bottom: 20px;
 }
 
 .row::before,
 .row::after {
-	display: table;
 	content: '';
+	display: table;
 }
 
 .row::after {
@@ -184,13 +183,6 @@ ul {
 	padding: 5px;
 }
 
-#login-form label,
-#register-form label {
-	width: 200px;
-	text-align: left;
-	margin-left: -125px;
-}
-
 @media only screen and (min-width: 640px) {
 	.col-6 {
 		width: 50%;
@@ -198,8 +190,8 @@ ul {
 	.col-4 {
 		width: 33%;
 	}
-	#logout button {
+	.logout-btn {
 	margin-right: 0;
 	margin-top: 45px;
-}
+	}
 }

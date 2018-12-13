@@ -34,19 +34,19 @@ function seedGardenData() {
   const seedData = [];
   for (let i = 1; i <= 10; i++) {
     seedData.push(generateGardenData());
-  };
+  }
   return Garden.insertMany(seedData);
-};
+}
 
 function addDays(date, days) {
   const result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
-};
+}
 
 function nextWater(data) {
     return addDays(data.lastWatered, data.waterEvery);
-};
+}
 
 function generateGardenData() {
   let gardenData = {
@@ -58,11 +58,11 @@ function generateGardenData() {
   };
   gardenData.nextWater = nextWater(gardenData);
   return gardenData;
-};
+}
 
 function tearDownDb() {
   return mongoose.connection.dropDatabase();
-};
+}
 
 describe('Garden API resource', function () {
   before(function () {
@@ -97,7 +97,7 @@ describe('Garden API resource', function () {
       })
       .then(function(count) {
         expect(res.body).to.have.lengthOf(count);
-      })
+      });
     });
 
     it('should return records with correct fields', function() {

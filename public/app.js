@@ -20,7 +20,7 @@ function loginUser(_username, _password) {
     .fail(err => {
         $('#login-error').prop('hidden', false);
     });
-};
+}
 
 function watchLoginSubmit() {
     $('#login-form').on('submit', event => {
@@ -29,7 +29,7 @@ function watchLoginSubmit() {
         const password = $('#password').val();
         loginUser(username, password);
     });
-};
+}
 
 function watchRegisterClick() {
     $('#login').on('click', '.register', event => {
@@ -41,7 +41,7 @@ function watchRegisterClick() {
         $('#login-error').prop('hidden', true);
     });
     watchRegisterSubmit();
-};
+}
 
 function watchRegisterSubmit() {
     $('#register-form').on('submit', event => {
@@ -52,7 +52,7 @@ function watchRegisterSubmit() {
         const lastName = $('#register-lastName').val();
         registerUser(username, password, firstName, lastName);  
     });
-};
+}
 
 function registerUser(_username, _password, _firstName, _lastName) {
     const user = {
@@ -77,7 +77,7 @@ function registerUser(_username, _password, _firstName, _lastName) {
         $('#register-error').prop('hidden', false);
         $('#register-error').html(`<p>${err.responseJSON.message}</p>`);
     });
-};
+}
 
 $(function() {
     watchLoginSubmit();
